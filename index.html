@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tidelands 2100</title>
+    <!-- Add Google Font import for Space Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Add @font-face rule for Inclusive Sans */
+        @font-face {
+            font-family: 'Inclusive Sans';
+            src: url('fonts/inclusive-sans-regular.woff2') format('woff2'),
+                 url('fonts/inclusive-sans-regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Remove the default font-family from here */
+        }
+
+        /* Apply font families to specific elements */
+        body {
+            overflow: hidden;
+            height: 100vh;
+            font-family: 'Inclusive Sans', sans-serif; /* Default body text font */
+            cursor: none; /* Hide default cursor */
+        }
+
+        /* Apply Space Mono to headers and buttons */
+        h1, h2, h3, h4, h5, h6,
+        .accordion-header,
+        .info-button,
+        .title {
+            font-family: 'Space Mono', monospace;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 50px); /* Adjusted to make room for shorter bottom bar */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .left-half {
+            width: 50%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid black;
+        }
+
+        .image-sequence {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-sequence img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: none;
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 100;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        .right-half {
+            width: 50%;
+            height: 100%;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .accordion {
+            width: 100%;
+            position: relative;
+        }
+
+        .accordion-item {
+            width: 100%;
+            transition: transform 0.5s ease;
+            position: absolute;
+            left: 0;
+            outline: 1px solid black;
+        }
+
+        .accordion-header {
+            height: 100px;
+            background-color: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 25px;
+            font-weight: normal;
+            position: relative;
+            z-index: 10; /* Ensure headers are always above content */
+        }
+
+        .accordion-header:hover {
+            background: #c3ff00;
+            outline: 1px solid
+        }
+
+        .accordion-content {
+            background-color: white;
+            max-height: 0;
+            overflow-y: auto;
+            transition: max-height 0.5s ease;
+            position: relative;
+            z-index: 5; /* Content sits below headers */
+        }
+
+        .content-inner {
+            padding: 20px;
+        }
+
+        .content-inner h2 {
+            margin-bottom: 15px;
+        }
+
+        .content-inner p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .content-inner img {
+            max-width: 100%;
+            height: auto;
+            margin: 15px 0;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: calc(100vh - 300px); /* Adjusted for 100px header height and 50px bottom bar */
+            overflow-y: auto;
+        }
+
+        /* Bottom Bar Styles */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: white;
+            border-top: 1px solid black;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 10000;
+        }
+
+        .info-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: transparent;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .divider {
+            height: 60%;
+            width: 1px;
+            background-color: black;
+            margin: 0 20px;
+        }
+
+        .timeline-container {
+            flex-grow: 1;
+            height: 12px;
+            border: 1px solid black;
+            background-color: #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            width: 0%; /* Will be updated via JS */
+            background: linear-gradient(to right, #c3ff00, #0000ff);
+            transition: width 0.3s ease;
+        }
+
+        /* Overlay and Modal Styles */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            padding: 90px 0;
+        }
+
+        .info-modal {
+            position: relative;
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 2%;
+            z-index: 2001;
+            display: none;
+        }
+
+        .info-content {
+            padding: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-section {
+            margin-bottom: 40px;
+        }
+
+        .info-section h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .top-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 35%;
+            background: linear-gradient(to bottom, rgba(197, 255, 25, 0.935), transparent);
+            z-index: 50; /* Above images but below title */
+            pointer-events: none; /* Allow interaction with elements below */
+        }
+
+        .bottom-gradient {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.47), transparent);
+            z-index: 50; /* Above images but below title */
+            pointer-events: none; /* Allow interaction with elements below */
+        }
+            .crosshair {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+            .vertical,
+            .horizontal {
+            position: fixed;
+            background: white;
+        }
+
+            .vertical {
+            width: 1px;
+            height: 100vh;
+        }
+
+            .horizontal {
+            height: 1px;
+            width: 100vw;
+        }
+
+            .dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: white;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="crosshair">
+        <div class="vertical"></div>
+        <div class="horizontal"></div>
+        <div class="dot"></div>
+      </div>
+    <div class="container">
+        <div class="left-half">
+            <div class="title">Tidelands 2100</div>
+            <div class="top-gradient"></div>
+            <div class="bottom-gradient"></div>
+            <div class="image-sequence" id="imageSequence">
+                <!-- Placeholder images will be populated by JavaScript -->
+                <img src="images/1.gif" alt="Tidelands frame 1" data-frame="1">
+                <img src="images/2.gif" alt="Tidelands frame 2" data-frame="2">
+                <img src="images/3.gif" alt="Tidelands frame 3" data-frame="3">
+                <img src="images/4.gif" alt="Tidelands frame 4" data-frame="4">
+                <img src="images/5.gif" alt="Tidelands frame 5" data-frame="5">
+                <img src="images/6.gif" alt="Tidelands frame 6" data-frame="6">
+                <img src="images/7.gif" alt="Tidelands frame 7" data-frame="7">
+                <img src="images/8.gif" alt="Tidelands frame 8" data-frame="8">
+                <img src="images/9.gif" alt="Tidelands frame 9" data-frame="9">
+                <img src="images/10.gif" alt="Tidelands frame 10" data-frame="10">
+                <img src="images/11.gif" alt="Tidelands frame 11" data-frame="11">
+                <img src="images/12.gif" alt="Tidelands frame 12" data-frame="12">
+                <img src="images/13.gif" alt="Tidelands frame 13" data-frame="13">
+                <img src="images/14.gif" alt="Tidelands frame 14" data-frame="14">
+                <img src="images/15.gif" alt="Tidelands frame 15" data-frame="15">
+                <img src="images/16.gif" alt="Tidelands frame 16" data-frame="16">
+                <img src="images/17.gif" alt="Tidelands frame 17" data-frame="17">
+                <img src="images/18.gif" alt="Tidelands frame 18" data-frame="18">
+                <img src="images/19.gif" alt="Tidelands frame 19" data-frame="19">
+                <img src="images/19.gif" alt="Tidelands frame 20" data-frame="20">
+            </div>
+        </div>
+        <div class="right-half">
+            <div class="accordion" id="accordion">
+                <div class="accordion-item" id="item1">
+                    <div class="accordion-header">OVERVIEW</div>
+                    <div class="accordion-content">
+                        <div class="content-inner">
+                            <h2>Project Overview</h2>
+                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
+                            <img src="/api/placeholder/600/400" alt="Coastal overview">
+                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
+                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
+                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
+                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
+                            <img src="/api/placeholder/600/400" alt="Coastal overview">
+                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
+                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
+                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
+                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
+                            <img src="/api/placeholder/600/400" alt="Coastal overview">
+                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
+                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
+                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
+                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
+                            <img src="/api/placeholder/600/400" alt="Coastal overview">
+                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
+                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
+                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" id="item2">
+                    <div class="accordion-header">BACKGROUND</div>
+                    <div class="accordion-content">
+                        <div class="content-inner">
+                            <h2>Historical Context</h2>
+                            <p>Tidal landscapes have always been dynamic environments, shaped by the continuous push and pull of tides, storms, and seasonal variations. However, the rate of change has accelerated dramatically due to climate change and human intervention.</p>
+                            <img src="/api/placeholder/600/400" alt="Historical tidelands">
+                            <p>Since the industrial revolution, these delicate ecosystems have been significantly altered through dredging, land reclamation, and coastal development, reducing their natural ability to buffer inland areas from storms and rising waters.</p>
+                            <p>Many of the world's major cities developed around estuaries and coastal areas due to their importance for trade and transportation. As sea levels rise, these urban centers face unprecedented challenges that require innovative approaches to urban planning and coastal management.</p>
+                            <p>Historical data shows that global sea levels rose approximately 20 centimeters in the 20th century - a rate significantly faster than the previous 3,000 years. Current projections suggest an additional rise of 30-100 centimeters by 2100, depending on greenhouse gas emission scenarios.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" id="item3">
+                    <div class="accordion-header">VISION</div>
+                    <div class="accordion-content">
+                        <div class="content-inner">
+                            <h2>Future Outlook</h2>
+                            <p>Tidelands 2100 envisions coastal zones as dynamic interfaces where nature and human infrastructure coexist through adaptive design. Rather than fighting against inevitable change, we propose working with natural processes to create resilient landscapes.</p>
+                            <img src="/api/placeholder/600/400" alt="Future vision concept">
+                            <p>Our vision includes floating architecture, restored wetlands that act as natural buffers, and new economic opportunities centered around blue carbon initiatives and sustainable aquaculture.</p>
+                            <p>By 2100, coastal communities will have transformed their relationship with rising waters, embracing designs that accommodate occasional flooding and capitalize on the ecological benefits of healthy tidal ecosystems.</p>
+                            <p>This transformation will require significant policy changes, community engagement, and technological innovation. Tidelands 2100 serves as both a documentation of this transition and a blueprint for communities beginning their adaptation journey.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" id="item4">
+                    <div class="accordion-header">FIELD NOTES</div>
+                    <div class="accordion-content">
+                        <div class="content-inner">
+                            <h2>Research Observations</h2>
+                            <p>Our field researchers have documented remarkable adaptations already occurring in tidal ecosystems around the world. These observations provide valuable insights into natural resilience mechanisms that can inform human adaptation strategies.</p>
+                            <img src="/api/placeholder/600/400" alt="Field research">
+                            <p>In salt marshes along the eastern seaboard, we've observed accelerated sediment accretion in some areas, allowing these natural buffers to keep pace with sea level rise when given sufficient space and sediment supply.</p>
+                            <p>Communities in Southeast Asia have revitalized traditional practices of living with water, creating amphibious housing and floating gardens that thrive during seasonal monsoons.</p>
+                            <p>Our monitoring stations across twelve global sites have captured the migration of mangrove forests inland, a natural adaptation to rising sea levels that provides continued protection for coastal areas.</p>
+                            <p>Urban planners in Rotterdam, Amsterdam, and other forward-thinking coastal cities have implemented "room for the river" policies that designate specific areas for controlled flooding during extreme events, protecting critical infrastructure while acknowledging the inevitability of water incursion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <button class="info-button" id="infoButton">i</button>
+        <div class="divider"></div>
+        <div class="timeline-container">
+            <div class="timeline-progress" id="timelineProgress"></div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="info-modal" id="infoModal">
+            <div class="info-content">
+                <div class="info-section">
+                    <h2>About Tidelands</h2>
+                    <div class="info-grid">
+                        <div>
+                            <p>Tidelands 2100 is a multidisciplinary research and visualization project exploring the future of coastal ecosystems in a changing climate. Our work combines scientific research, community engagement, and creative visualization to help people understand and prepare for the transformations our shorelines will undergo in the coming decades.</p>
+                            <p>Founded in 2022, the project brings together climate scientists, urban planners, coastal engineers, and artists to document coastal change and imagine adaptive futures.</p>
+                        </div>
+                        <div>
+                            <p>Our approach is grounded in both scientific modeling and local knowledge. We believe that the most effective adaptation strategies emerge when technical expertise is combined with community wisdom and cultural values.</p>
+                            <p>Through a series of regional case studies, we examine how diverse coastal communities are responding to sea level rise, increased storm intensity, and changing ecological conditions.</p>
+                        </div>
+                        <div>
+                            <p>This website presents a visual journey through potential coastal futures, ranging from immediate changes visible today to speculative scenarios for the end of the century.</p>
+                            <p>Rather than offering a single prediction, we present multiple pathways reflecting different adaptation approaches and climate scenarios. Our goal is to expand the imagination of what's possible and inspire proactive engagement with inevitable change.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h2>The Team</h2>
+                    <div class="info-grid">
+                        <div>
+                            <p><strong>Dr. Elena Miyamoto</strong><br>Project Director & Marine Ecologist</p>
+                            <p><strong>Marco Hernandez</strong><br>Climate Adaptation Specialist</p>
+                            <p><strong>Dr. Aisha Johnson</strong><br>Coastal Engineering Lead</p>
+                        </div>
+                        <div>
+                            <p><strong>Luisa Chen</strong><br>Visual Documentation & Design</p>
+                            <p><strong>Samuel Okafor</strong><br>Community Engagement Coordinator</p>
+                            <p><strong>Dr. Thomas Eriksen</strong><br>Hydrological Modeling</p>
+                        </div>
+                        <div>
+                            <p><strong>Maya Williams</strong><br>Environmental Policy Advisor</p>
+                            <p><strong>Dr. Carlos Oliveira</strong><br>Historical Ecology</p>
+                            <p><strong>Leila Hassan</strong><br>Digital Storytelling & Archives</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            const crosshair = document.querySelector('.crosshair');
+            const vertical = document.querySelector('.vertical');
+            const horizontal = document.querySelector('.horizontal');
+            const dot = document.querySelector('.dot');
+
+            document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            vertical.style.left = `${x}px`;
+            horizontal.style.top = `${y}px`;
+            dot.style.left = `${x}px`;
+            dot.style.top = `${y}px`;
+            });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Image sequence scrolling logic
+            const imageSequence = document.getElementById('imageSequence');
+            const images = imageSequence.querySelectorAll('img');
+            const totalFrames = images.length;
+            let currentFrame = 0;
+            
+            // Scroll control variables
+            let lastScrollTime = 0;
+            const scrollCooldown = 0; // milliseconds between allowed scroll actions
+            
+            // Timeline elements
+            const timelineProgress = document.getElementById('timelineProgress');
+            
+            // Info modal elements
+            const infoButton = document.getElementById('infoButton');
+            const overlay = document.getElementById('overlay');
+            const infoModal = document.getElementById('infoModal');
+            
+            // Show the first frame initially
+            images[0].style.opacity = 1;
+            
+            // Update timeline based on current frame
+            function updateTimeline() {
+                const progressPercentage = (currentFrame / (totalFrames - 1)) * 100;
+                timelineProgress.style.width = `${progressPercentage}%`;
+            }
+            
+            // Handle scroll on left side to control image sequence
+            document.querySelector('.left-half').addEventListener('wheel', function(e) {
+                e.preventDefault();
+                
+                // Check if enough time has passed since last scroll
+                const now = Date.now();
+                if (now - lastScrollTime < scrollCooldown) {
+                    return; // Exit if scrolling too quickly
+                }
+                
+                // Determine scroll direction, but use a threshold
+                const scrollThreshold = 2; // Adjust based on testing
+                
+                // Only change frame if scroll amount exceeds threshold
+                if (Math.abs(e.deltaY) >= scrollThreshold) {
+                    const direction = e.deltaY > 0 ? 1 : -1;
+                    
+                    // Calculate new frame, but prevent wrapping around
+                    let newFrame = currentFrame + direction;
+                    
+                    // Ensure we stay within bounds - don't loop
+                    if (newFrame >= 0 && newFrame < totalFrames) {
+                        // Hide current frame
+                        images[currentFrame].style.opacity = 0;
+                        
+                        // Update current frame
+                        currentFrame = newFrame;
+                        
+                        // Show new frame
+                        images[currentFrame].style.opacity = 1;
+                        
+                        // Update timeline
+                        updateTimeline();
+                        
+                        // Update last scroll time
+                        lastScrollTime = now;
+                    }
+                }
+            });
+            
+            // Accordion functionality
+            const accordion = document.getElementById('accordion');
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            const headerHeight = 100; // Match this to the .accordion-header height in CSS
+            
+            // Position the accordion items initially - stacked with no gaps
+            function positionItemsDefault() {
+                accordionItems.forEach((item, i) => {
+                    item.style.transform = `translateY(${i * headerHeight}px)`;
+                    item.style.zIndex = `${accordionItems.length - i}`; // Higher items have higher z-index
+                });
+            }
+            
+            // Position when an item is active - maintain stacking order at bottom
+            function positionItemsWithActive(activeIndex) {
+                const viewportHeight = window.innerHeight - 50; // Adjust for bottom bar
+                
+                accordionItems.forEach((item, i) => {
+                    if (i <= activeIndex) {
+                        // Items before and including active stay at top
+                        item.style.transform = `translateY(${i * headerHeight}px)`;
+                    } else {
+                        // Items after active go to bottom but maintain their relative stacking
+                        // Calculate starting position for the first item below active
+                        const activeContentHeight = accordionItems[activeIndex].querySelector('.accordion-content').scrollHeight;
+                        const bottomStartPos = viewportHeight - ((accordionItems.length - activeIndex - 1) * headerHeight);
+                        
+                        // Position this item at its place in the stack from the bottom
+                        const posFromBottom = i - activeIndex - 1; // How many items we are from the first one below active
+                        item.style.transform = `translateY(${bottomStartPos + (posFromBottom * headerHeight)}px)`;
+                    }
+                });
+            }
+            
+            // Initialize default positions
+            positionItemsDefault();
+            
+            // Add click event to headers
+            accordionHeaders.forEach((header, index) => {
+                header.addEventListener('click', function() {
+                    const item = this.parentElement;
+                    const wasActive = item.classList.contains('active');
+                    
+                    // Close all items first
+                    accordionItems.forEach(accItem => {
+                        accItem.classList.remove('active');
+                        accItem.querySelector('.accordion-content').style.maxHeight = '0';
+                    });
+                    
+                    // If clicked item wasn't active before, open it
+                    if (!wasActive) {
+                        item.classList.add('active');
+                        const content = item.querySelector('.accordion-content');
+                        content.style.maxHeight = `calc(100vh - ${headerHeight + 150}px)`; // Adjusted for header height and bottom bar
+                        positionItemsWithActive(index);
+                    } else {
+                        // If it was active and we're closing it, return to default positions
+                        positionItemsDefault();
+                    }
+                });
+            });
+            
+            // Info button toggle
+            let infoOpen = false;
+            
+            infoButton.addEventListener('click', function() {
+                if (!infoOpen) {
+                    // Open info modal
+                    infoButton.innerHTML = "x";
+                    overlay.style.display = "block";
+                    infoModal.style.display = "block";
+                    infoOpen = true;
+                } else {
+                    // Close info modal
+                    infoButton.innerHTML = "i";
+                    overlay.style.display = "none";
+                    infoModal.style.display = "none";
+                    infoOpen = false;
+                }
+            });
+            
+            // Close modal when clicking overlay (but not when clicking on the modal itself)
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    infoButton.innerHTML = "i";
+                    overlay.style.display = "none";
+                    infoModal.style.display = "none";
+                    infoOpen = false;
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const activeIndex = Array.from(accordionItems).findIndex(item => item.classList.contains('active'));
+                
+                if (activeIndex >= 0) {
+                    positionItemsWithActive(activeIndex);
+                } else {
+                    positionItemsDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
