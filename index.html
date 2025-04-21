@@ -8,8 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/bcb1fcz.css">
     <style>
-        /* Add @font-face rule for Inclusive Sans */
         @font-face {
             font-family: 'Inclusive Sans';
             src: url('fonts/inclusive-sans-regular.woff2') format('woff2'),
@@ -54,7 +54,7 @@
             height: 100%;
             position: relative;
             overflow: hidden;
-            border-right: 1px solid black;
+            border-right: 1px solid #0900BA;
         }
 
         .image-sequence {
@@ -77,19 +77,19 @@
 
         .title {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
+            top: 0;
+            left: 0;
+            color: #0900BA;
+            font-size: 20px;
             z-index: 100;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
-
+            background-color: #E6E7E8;
+            outline: 1px solid #0900BA;
+            padding: 10px 15px;
+            }
         .right-half {
             width: 50%;
             height: 100%;
-            background-color: #f5f5f5;
+            background-color: #D1D3D4;
             overflow: hidden;
             position: relative;
         }
@@ -104,12 +104,13 @@
             transition: transform 0.5s ease;
             position: absolute;
             left: 0;
-            outline: 1px solid black;
+            outline: 1px solid #0900BA;
         }
 
         .accordion-header {
             height: 100px;
-            background-color: white;
+            z-index: 100;
+            background-color: #e9e9e9;
             color: black;
             display: flex;
             align-items: center;
@@ -126,7 +127,7 @@
         }
 
         .accordion-content {
-            background-color: white;
+            background-color: #e9e9e9;
             max-height: 0;
             overflow-y: auto;
             transition: max-height 0.5s ease;
@@ -165,8 +166,8 @@
             left: 0;
             width: 100%;
             height: 50px;
-            background-color: white;
-            border-top: 1px solid black;
+            background-color: #e9e9e9;
+            border-top: 1px solid #0900BA;
             display: flex;
             align-items: center;
             padding: 0 20px;
@@ -174,10 +175,11 @@
         }
 
         .info-button {
+            color: #0900BA;
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            border: 1px solid black;
+            border: 1px solid #0900BA;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -231,7 +233,7 @@
             margin: 0 auto;
             background-color: white;
             border: 1px solid black;
-            border-radius: 2%;
+            border-radius: 5px;
             z-index: 2001;
             display: none;
         }
@@ -314,6 +316,94 @@
             background: white;
             transform: translate(-50%, -50%);
         }
+            /* Mobile-specific styles */
+    @media (max-width: 768px) {
+        /* Change layout from side-by-side to stacked */
+        .container {
+            flex-direction: column;
+            height: auto;
+            overflow: auto;
+        }
+        
+        /* Title bar spans full width */
+        .title {
+            position: fixed; /* Fixed position at top */
+            top: 0;
+            left: 0;
+            width: 100%; /* Full width */
+            display: flex;
+            justify-content: space-between; /* Text left, button right */
+            align-items: center;
+            padding: 10px 15px;
+            z-index: 1000; /* Ensure it stays on top */
+            height: 50px; /* Fixed height */
+        }
+        
+        /* Move info button into the title bar */
+        .info-button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* Hide the bottom bar on mobile */
+        .bottom-bar {
+            display: none;
+        }
+        
+        /* Adjust content layout */
+        .left-half, .right-half {
+            width: 100%;
+            border-right: none;
+        }
+        
+        /* Accordion starts below the title bar */
+        .right-half {
+            order: 1; /* Display accordion first */
+            margin-top: 50px; /* Space for fixed title bar */
+        }
+        
+        /* Image/GIF comes after accordion */
+        .left-half {
+            order: 2;
+            height: 50vh; /* Half viewport height for the image */
+        }
+        
+        /* Adjust accordion sizing */
+        .accordion {
+            width: 100%;
+        }
+        
+        /* Handle accordion positioning differently */
+        .accordion-item {
+            position: relative; /* Not absolute positioning on mobile */
+            transform: none !important; /* Override any transform from JS */
+            margin-bottom: 1px; /* Add slight spacing between items */
+        }
+        
+        .accordion-header {
+            height: 70px; /* Slightly smaller on mobile */
+        }
+        
+        /* Handle expanded content differently */
+        .accordion-item.active .accordion-content {
+            max-height: 70vh; /* Allow more space */
+        }
+        
+        /* Adjust overlay for mobile */
+        .info-modal {
+            width: 95%;
+            margin: 70px auto 20px;
+            max-height: 80vh;
+        }
+        
+        /* Make grid single column on mobile */
+        .info-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+    }
     </style>
 </head>
 <body>
@@ -324,7 +414,7 @@
       </div>
     <div class="container">
         <div class="left-half">
-            <div class="title">Tidelands 2100</div>
+            <div class="title">TIDELANDS 2100</div>
             <div class="top-gradient"></div>
             <div class="bottom-gradient"></div>
             <div class="image-sequence" id="imageSequence">
@@ -357,27 +447,11 @@
                     <div class="accordion-header">OVERVIEW</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <h2>Project Overview</h2>
-                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
-                            <img src="/api/placeholder/600/400" alt="Coastal overview">
-                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
-                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
-                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
-                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
-                            <img src="/api/placeholder/600/400" alt="Coastal overview">
-                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
-                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
-                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
-                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
-                            <img src="/api/placeholder/600/400" alt="Coastal overview">
-                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
-                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
-                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
-                            <p>Tidelands 2100 is a forward-looking initiative examining coastal changes and adaptations predicted over the next 80 years. The project explores how rising sea levels will reshape our coastlines and how communities can prepare for these transformations.</p>
-                            <img src="/api/placeholder/600/400" alt="Coastal overview">
-                            <p>Our interdisciplinary approach combines climate science, urban planning, marine biology, and community engagement to develop sustainable solutions for coastal regions facing significant environmental change.</p>
-                            <p>Through this work, we aim to document the changing relationship between humans and tidal ecosystems, creating a framework for adaptive management practices that can be implemented globally.</p>
-                            <p>The research conducted through Tidelands 2100 provides crucial insights into how coastal communities can build resilience against climate-induced changes while preserving ecological diversity and cultural heritage.</p>
+                            <p>TIDELANDS is an extended reality (XR) artwork that immerses audiences in a speculative climate future along Potter’s Pond, Rhode Island—a coastline projected to be underwater by century’s end. Set in 2100, the piece follows a day in the life of a coastal community that has reclaimed a landscape once abandoned after flooding, evacuation, and state withdrawal. The narrative unfolds during an annual sealife harvest festival—a civic ritual rooted in regional and Indigenous traditions, reconfigured through reciprocity with water, weather, and more-than-human life.<br><br>
+                                <img src="images/overview.png" alt="SCUP Aquaculture"><br><br>
+                                Through acts of gathering, cooking, and care, the rhythms of this floating village surface and take shape. Audiences move through interconnected sites: tidal greenhouses with salt-adapted crops, a wind-powered shellfish hatchery, a thriving fish co-op. Some are protopic extensions of current adaptive strategies; others emerge from the emotional logic of place—rituals of grief, memory, and reinvention. 
+                                Built in Unity, TIDELANDS merges NOAA flood projections, 3D ecological scans, field-recorded soundscapes, site-specific architecture, and oral histories into an immersive environment rooted in real people and place. Growing from a multi-year collaboration with RI’s blue sector, it explores how XR can serve as both a storytelling medium and a civic tool for place-based co-creation of climate futures.<br><br>
+                                How do we want to live, when we can no longer live as we do now? Rather than accept coastal abandonment as inevitable, TIDELANDS offers a counter-imaginary to coastal displacement: a vision of climate resilience where our local communities with deep ties to the shore adapt—and even thrive—in the face of rising seas.</p>
                         </div>
                     </div>
                 </div>
@@ -385,12 +459,11 @@
                     <div class="accordion-header">BACKGROUND</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <h2>Historical Context</h2>
-                            <p>Tidal landscapes have always been dynamic environments, shaped by the continuous push and pull of tides, storms, and seasonal variations. However, the rate of change has accelerated dramatically due to climate change and human intervention.</p>
-                            <img src="/api/placeholder/600/400" alt="Historical tidelands">
-                            <p>Since the industrial revolution, these delicate ecosystems have been significantly altered through dredging, land reclamation, and coastal development, reducing their natural ability to buffer inland areas from storms and rising waters.</p>
-                            <p>Many of the world's major cities developed around estuaries and coastal areas due to their importance for trade and transportation. As sea levels rise, these urban centers face unprecedented challenges that require innovative approaches to urban planning and coastal management.</p>
-                            <p>Historical data shows that global sea levels rose approximately 20 centimeters in the 20th century - a rate significantly faster than the previous 3,000 years. Current projections suggest an additional rise of 30-100 centimeters by 2100, depending on greenhouse gas emission scenarios.</p>
+                            <p>SCUP Aquaculture (2022–2025) was a design and research collective investigating how ocean infrastructure might serve both ecological regeneration and the livelihoods of coastal communities. Operating in the fraught space between offshore wind development and traditional fisheries, SCUP proposed a socio-technical solution: co-habited aquaculture platforms occupying underutilized zones around wind turbines. Developed in collaboration with aquaculturists, fisheries scientists, and wind developers, the first prototype—a modular, low-cost system of oyster cages, mussel lines, and buoys—was designed to strengthen Rhode Island’s food resilience by enabling sustainable protein cultivation in open ocean environments.<br><br>
+                                <img src="images/scup.png" alt="SCUP Aquaculture"><br><br>
+                            But SCUP was never just a technical intervention—it was a relational one. Built through interviews, workshops, and long-term partnerships with local fishers, scientists, and policymakers, the project revealed both the potential and the profound constraints of implementing such solutions at scale. Corporate control of ocean leases, a fractured regulatory system, and rigid insurance and liability frameworks posed structural barriers that innovation alone couldn’t solve.<br><br>
+                            These realities gave rise to Tidelands 2100—a deeper inquiry into the political, social, and economic conditions that must shift for projects like SCUP to truly take root. Where SCUP was a first-phase prototype, Tidelands 2100 is a generative framework—a co-created process for imagining coastal futures grounded not in top-down projections, but in the lived experiences, knowledge, and agency of the communities who call these coastlines home.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -398,12 +471,10 @@
                     <div class="accordion-header">VISION</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <h2>Future Outlook</h2>
-                            <p>Tidelands 2100 envisions coastal zones as dynamic interfaces where nature and human infrastructure coexist through adaptive design. Rather than fighting against inevitable change, we propose working with natural processes to create resilient landscapes.</p>
-                            <img src="/api/placeholder/600/400" alt="Future vision concept">
-                            <p>Our vision includes floating architecture, restored wetlands that act as natural buffers, and new economic opportunities centered around blue carbon initiatives and sustainable aquaculture.</p>
-                            <p>By 2100, coastal communities will have transformed their relationship with rising waters, embracing designs that accommodate occasional flooding and capitalize on the ecological benefits of healthy tidal ecosystems.</p>
-                            <p>This transformation will require significant policy changes, community engagement, and technological innovation. Tidelands 2100 serves as both a documentation of this transition and a blueprint for communities beginning their adaptation journey.</p>
+                            <p>Based on NOAA and state-level climate projections, Potter’s Pond—an ecologically rich estuary and working waterfront in South Kingstown, RI—is expected to face up to nine feet of sea level rise over the next 75 years. This future is neither abstract nor benign. It is already reshaping a top-down narrative of coastal displacement and migration: redrawing shorelines, redefining insurance policies, and informing planning frameworks that determine who and what is worth saving.<br><br>
+                            These narratives of managed retreat too often ignore the lived knowledge, cultural histories, and ecological relationships that define place for coastal communities. For some, leaving is not simply a practical challenge; it is a loss of identity, practice, and way of life. It is erasure.<br><br>
+                            Tidelands challenges this logic. It resists the flattening of adaptation into evacuation plans and policy briefings, and instead invites local residents to envision futures beyond displacement. Through interviews, co-writing sessions, and workshops, this project brings aquaculturists, fishers, chefs, scientists, and Indigenous stewards into the imagination of new civic ecologies—expansive futures that cultivate healthier ways of knowing and being with our human and more-than-human neighbors.<br><br>
+                            By surfacing stories often excluded from formal planning processes, Tidelands enables a model of climate adaptation that is not reactive, but regenerative—rooted in relational knowledge and lived connection to a changing coast. Through the medium of XR, we aim to foster not just environmental resilience, but social transformation—where communities become agents in imagining and enacting their own futures.</p>
                         </div>
                     </div>
                 </div>
@@ -411,13 +482,8 @@
                     <div class="accordion-header">FIELD NOTES</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <h2>Research Observations</h2>
-                            <p>Our field researchers have documented remarkable adaptations already occurring in tidal ecosystems around the world. These observations provide valuable insights into natural resilience mechanisms that can inform human adaptation strategies.</p>
-                            <img src="/api/placeholder/600/400" alt="Field research">
-                            <p>In salt marshes along the eastern seaboard, we've observed accelerated sediment accretion in some areas, allowing these natural buffers to keep pace with sea level rise when given sufficient space and sediment supply.</p>
-                            <p>Communities in Southeast Asia have revitalized traditional practices of living with water, creating amphibious housing and floating gardens that thrive during seasonal monsoons.</p>
-                            <p>Our monitoring stations across twelve global sites have captured the migration of mangrove forests inland, a natural adaptation to rising sea levels that provides continued protection for coastal areas.</p>
-                            <p>Urban planners in Rotterdam, Amsterdam, and other forward-thinking coastal cities have implemented "room for the river" policies that designate specific areas for controlled flooding during extreme events, protecting critical infrastructure while acknowledging the inevitability of water incursion.</p>
+                            <p>Check back for field notes!<br><br>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -437,40 +503,30 @@
         <div class="info-modal" id="infoModal">
             <div class="info-content">
                 <div class="info-section">
-                    <h2>About Tidelands</h2>
+                    <h2>ABOUT</h2>
                     <div class="info-grid">
                         <div>
-                            <p>Tidelands 2100 is a multidisciplinary research and visualization project exploring the future of coastal ecosystems in a changing climate. Our work combines scientific research, community engagement, and creative visualization to help people understand and prepare for the transformations our shorelines will undergo in the coming decades.</p>
-                            <p>Founded in 2022, the project brings together climate scientists, urban planners, coastal engineers, and artists to document coastal change and imagine adaptive futures.</p>
                         </div>
                         <div>
-                            <p>Our approach is grounded in both scientific modeling and local knowledge. We believe that the most effective adaptation strategies emerge when technical expertise is combined with community wisdom and cultural values.</p>
-                            <p>Through a series of regional case studies, we examine how diverse coastal communities are responding to sea level rise, increased storm intensity, and changing ecological conditions.</p>
                         </div>
                         <div>
-                            <p>This website presents a visual journey through potential coastal futures, ranging from immediate changes visible today to speculative scenarios for the end of the century.</p>
-                            <p>Rather than offering a single prediction, we present multiple pathways reflecting different adaptation approaches and climate scenarios. Our goal is to expand the imagination of what's possible and inspire proactive engagement with inevitable change.</p>
                         </div>
-                    </div>
-                </div>
-
+                        </div>
+                        </div>
                 <div class="info-section">
-                    <h2>The Team</h2>
+                    <h2>TEAM</h2>
                     <div class="info-grid">
                         <div>
-                            <p><strong>Dr. Elena Miyamoto</strong><br>Project Director & Marine Ecologist</p>
-                            <p><strong>Marco Hernandez</strong><br>Climate Adaptation Specialist</p>
-                            <p><strong>Dr. Aisha Johnson</strong><br>Coastal Engineering Lead</p>
+                            <p><strong>Annie Chen</strong><br>Project Director</p>
+                            <p><strong>Ryan Lettieri</strong><br>Web Developer & Worldbuilder</p>
+
+
                         </div>
                         <div>
-                            <p><strong>Luisa Chen</strong><br>Visual Documentation & Design</p>
-                            <p><strong>Samuel Okafor</strong><br>Community Engagement Coordinator</p>
-                            <p><strong>Dr. Thomas Eriksen</strong><br>Hydrological Modeling</p>
+                            <p><strong>Zoe Lee</strong><br>Producer</p>
                         </div>
                         <div>
-                            <p><strong>Maya Williams</strong><br>Environmental Policy Advisor</p>
-                            <p><strong>Dr. Carlos Oliveira</strong><br>Historical Ecology</p>
-                            <p><strong>Leila Hassan</strong><br>Digital Storytelling & Archives</p>
+                            <p><strong>Ellen Fritz</strong><br>XR Artist & Producer</p>
                         </div>
                     </div>
                 </div>
@@ -495,6 +551,7 @@
             });
 
         document.addEventListener('DOMContentLoaded', function() {
+            
             // Image sequence scrolling logic
             const imageSequence = document.getElementById('imageSequence');
             const images = imageSequence.querySelectorAll('img');
@@ -559,7 +616,7 @@
                         // Update last scroll time
                         lastScrollTime = now;
                     }
-                }
+                }        
             });
             
             // Accordion functionality
@@ -579,24 +636,79 @@
             // Position when an item is active - maintain stacking order at bottom
             function positionItemsWithActive(activeIndex) {
                 const viewportHeight = window.innerHeight - 50; // Adjust for bottom bar
+                const itemsBelow = accordionItems.length - activeIndex - 1;
+                const bottomStackHeight = itemsBelow * headerHeight;
+                
+                // Calculate the maximum space available for the content
+                const maxContentHeight = viewportHeight - ((activeIndex + 1) * headerHeight) - bottomStackHeight;
+                
+                // Set the active content's max height
+                const activeContent = accordionItems[activeIndex].querySelector('.accordion-content');
+                activeContent.style.maxHeight = `${maxContentHeight}px`;
                 
                 accordionItems.forEach((item, i) => {
                     if (i <= activeIndex) {
                         // Items before and including active stay at top
                         item.style.transform = `translateY(${i * headerHeight}px)`;
                     } else {
-                        // Items after active go to bottom but maintain their relative stacking
-                        // Calculate starting position for the first item below active
-                        const activeContentHeight = accordionItems[activeIndex].querySelector('.accordion-content').scrollHeight;
-                        const bottomStartPos = viewportHeight - ((accordionItems.length - activeIndex - 1) * headerHeight);
-                        
-                        // Position this item at its place in the stack from the bottom
-                        const posFromBottom = i - activeIndex - 1; // How many items we are from the first one below active
-                        item.style.transform = `translateY(${bottomStartPos + (posFromBottom * headerHeight)}px)`;
+                        // Items after active go to bottom - calculate this position from the bottom of viewport
+                        const bottomPos = viewportHeight - bottomStackHeight + ((i - activeIndex - 1) * headerHeight);
+                        item.style.transform = `translateY(${bottomPos}px)`;
                     }
                 });
             }
-            
+                            // Function to check if we're on mobile and adjust layout if needed
+                function handleMobileLayout() {
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    if (isMobile) {
+                        // Mobile-specific JavaScript adjustments
+                        
+                        // Move info button to the title bar
+                        const infoButton = document.getElementById('infoButton');
+                        const titleBar = document.querySelector('.title');
+                        
+                        // Only move if not already moved
+                        if (infoButton.parentElement.classList.contains('bottom-bar')) {
+                            titleBar.appendChild(infoButton);
+                        }
+                        
+                        // Change accordion behavior for mobile
+                        const accordionItems = document.querySelectorAll('.accordion-item');
+                        
+                        // Reset all positioning that might be set by desktop JS
+                        accordionItems.forEach((item) => {
+                            item.style.transform = 'none';
+                            item.style.position = 'relative';
+                        });
+                        
+                        // Handle active item differently on mobile
+                        const activeItem = document.querySelector('.accordion-item.active');
+                        if (activeItem) {
+                            // Scroll to the active item
+                            activeItem.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    } else {
+                        // Desktop layout - restore info button to bottom bar if needed
+                        const infoButton = document.getElementById('infoButton');
+                        const bottomBar = document.querySelector('.bottom-bar');
+                        
+                        // Only move if it's been moved to title
+                        if (infoButton.parentElement.classList.contains('title')) {
+                            // Insert at the beginning of bottom bar
+                            bottomBar.insertBefore(infoButton, bottomBar.firstChild);
+                        }
+                        
+                        // Restore desktop accordion behavior
+                        const activeIndex = Array.from(accordionItems).findIndex(item => item.classList.contains('active'));
+                        
+                        if (activeIndex >= 0) {
+                            positionItemsWithActive(activeIndex);
+                        } else {
+                            positionItemsDefault();
+                        }
+                    }
+                }
             // Initialize default positions
             positionItemsDefault();
             
@@ -605,6 +717,7 @@
                 header.addEventListener('click', function() {
                     const item = this.parentElement;
                     const wasActive = item.classList.contains('active');
+                    const isMobile = window.innerWidth <= 768;
                     
                     // Close all items first
                     accordionItems.forEach(accItem => {
@@ -616,10 +729,19 @@
                     if (!wasActive) {
                         item.classList.add('active');
                         const content = item.querySelector('.accordion-content');
-                        content.style.maxHeight = `calc(100vh - ${headerHeight + 150}px)`; // Adjusted for header height and bottom bar
-                        positionItemsWithActive(index);
-                    } else {
-                        // If it was active and we're closing it, return to default positions
+                        
+                        if (isMobile) {
+                            content.style.maxHeight = '70vh'; // Mobile height
+                            // Scroll to show the opened item
+                            setTimeout(() => {
+                                item.scrollIntoView({ behavior: 'smooth' });
+                            }, 100);
+                        } else {
+                            content.style.maxHeight = `calc(100vh - ${headerHeight + 150}px)`; // Desktop height
+                            positionItemsWithActive(index); // Desktop positioning
+                        }
+                    } else if (!isMobile) {
+                        // If it was active and we're closing it on desktop, return to default positions
                         positionItemsDefault();
                     }
                 });
@@ -656,14 +778,23 @@
             
             // Handle window resize
             window.addEventListener('resize', function() {
-                const activeIndex = Array.from(accordionItems).findIndex(item => item.classList.contains('active'));
-                
-                if (activeIndex >= 0) {
-                    positionItemsWithActive(activeIndex);
-                } else {
-                    positionItemsDefault();
-                }
-            });
+            handleMobileLayout();
+            
+            // Keep your existing resize code here
+            const activeIndex = Array.from(accordionItems).findIndex(item => item.classList.contains('active'));
+            
+            if (activeIndex >= 0 && window.innerWidth > 768) { // Only run on desktop
+                positionItemsWithActive(activeIndex);
+            } else if (window.innerWidth > 768) { // Only run on desktop
+                positionItemsDefault();
+            }
+        });
+            handleMobileLayout();
+            // Auto-open the Overview section (first accordion item)
+            const firstItem = accordionItems[0];
+            firstItem.classList.add('active');
+            const firstContent = firstItem.querySelector('.accordion-content');
+            positionItemsWithActive(0); // Position items with first item (index 0) active
         });
     </script>
 </body>
