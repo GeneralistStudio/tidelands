@@ -399,208 +399,215 @@
             background: white;
             transform: translate(-50%, -50%);
         }
-        /* MOBILE CSS - Complete replacement with fixed title and info button */
-        @media (max-width: 768px) {
-    /* Fixed viewport layout - no scrolling */
-    body, html {
-        overflow: hidden;
-        height: 100%;
-        position: fixed;
-        width: 100%;
-        cursor: auto;
-    }
-    .crosshair {
-        display: none; /* Hide crosshair elements on mobile */
-    }
-    /* Container takes full viewport */
-    .container {
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
-        position: relative;
-        padding-top: 50px;
-    }
-    .right-half::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 70%;
-        background: linear-gradient(to bottom, 
-                     rgba(197, 255, 25, 0) 0%, /* Start transparent at the top */
-                     rgba(0, 0, 0, 0.339) 50%, /* Full color starts lower down */
-                     transparent 100%); /* Fade to transparent at the bottom */
-        z-index: 5; /* Above background image but below content */
-        pointer-events: none; /* Allow interaction with elements below */
-    }
-    
-    .right-half::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 25%;
-        background: linear-gradient(to top, rgb(197, 255, 25, 0.935), transparent);
-        z-index: 5; /* Above background image but below content */
-        pointer-events: none; /* Allow interaction with elements below */
-    }
-    
-    /* Fixed title bar at top */
-    .title {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 15px;
-        z-index: 2500;
-        height: 50px;
-        background-color: #E6E7E8;
-        outline: 1px solid #0900BA;
-        color: #0900BA; /* Ensure text is visible */
-        -webkit-transform: translateZ(0);
-    }
-    
-    /* Move info button into title bar */
-    .info-button {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #0900BA;
-        background-color: white;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        border: 1px solid #0900BA;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        font-weight: normal;
-        font-size: 20px;
-    }
-    
-    /* Hide bottom bar */
-    .bottom-bar {
-        display: none;
-    }
-    
-    /* Hide left-half completely */
-    .left-half {
-        display: none;
-    }
-    
-    /* Right-half takes full width and height */
-    .right-half {
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 50px); /* Full remaining height */
-        z-index: 10;
-        background-image: url('images/background.gif'); /* Replace with your image path */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        overflow: hidden;
-    }
-    
-    /* Accordion takes full width/height of container */
-    .accordion {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        z-index: 50;
-    }
-    
-    /* Accordion items are positioned absolutely with transitions */
-    .accordion-item {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        transition: top 0.5s ease;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Header styling */
-    .accordion-header {
-        height: 60px;
-        background-color: #e9e9e9;
-        outline: 1px solid #0900BA;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        font-size: 30px;
-        z-index: 10;
-    }
-    
-    .accordion-header:hover {
-        background-color: #c3ff00;
-    }
-    
-    /* Content area styling */
-    .accordion-content {
-        background-color: #e9e9e9;
-        max-height: 0;
-        overflow-y: auto;
-        transition: max-height 0.5s ease;
-        z-index: 5;
-    }
-    
-    /* Ensure solid background for content */
-    .content-inner {
-        background-color: #e9e9e9;
-        padding: 20px;
-    }
-    
-    /* Modal adjustments for mobile */
-    .overlay {
-        z-index: 2000;
-        overflow-y: scroll;
-    }
-    
-    .info-modal {
-        position: relative;
-        width: 95%;
-        margin: 0 auto;
-        background-color: white;
-        border: 1px solid black;
-        border-radius: 5px;
-        z-index: 2001;
-        display: none;
-        max-height: none; /* Remove any max-height constraint */
-        height: auto; /* Let it expand to fit content */
-        overflow: visible; /* Don't constrain content */
-    }
-    
-    .info-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .team-grid {
-        grid-template-columns: 1fr 1fr; /* Single column on mobile */
-    }
-    
-    .team-member {
-        margin-bottom: 30px;
-    }
-    
-    .contact-grid {
-        grid-template-columns: 1fr; /* Single column on mobile */
-        gap: 30px;
-    }
-    
-    body.modal-open {
-        position: fixed;
-        width: 100%;
-    }
+        @media (min-width: 769px) {
+            .right-half {
+            background-image: url('images/dither-animation-wide.gif');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: center calc(100% + 20px);
+            }
         }
+        @media (max-width: 768px) {
+        /* Fixed viewport layout - no scrolling */
+        body, html {
+            overflow: hidden;
+            height: 100%;
+            position: fixed;
+            width: 100%;
+            cursor: auto;
+        }
+        .crosshair {
+            display: none; /* Hide crosshair elements on mobile */
+        }
+        /* Container takes full viewport */
+        .container {
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            padding-top: 50px;
+        }
+        .right-half::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to bottom, 
+                        rgba(197, 255, 25, 0) 0%, /* Start transparent at the top */
+                        rgba(0, 0, 0, 0.339) 50%, /* Full color starts lower down */
+                        transparent 100%); /* Fade to transparent at the bottom */
+            z-index: 5; /* Above background image but below content */
+            pointer-events: none; /* Allow interaction with elements below */
+        }
+        
+        .right-half::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(to top, rgb(197, 255, 25, 0.935), transparent);
+            z-index: 5; /* Above background image but below content */
+            pointer-events: none; /* Allow interaction with elements below */
+        }
+        
+        /* Fixed title bar at top */
+        .title {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            z-index: 2500;
+            height: 50px;
+            background-color: #E6E7E8;
+            outline: 1px solid #0900BA;
+            color: #0900BA; /* Ensure text is visible */
+            -webkit-transform: translateZ(0);
+        }
+        
+        /* Move info button into title bar */
+        .info-button {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0900BA;
+            background-color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #0900BA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 20px;
+        }
+        
+        /* Hide bottom bar */
+        .bottom-bar {
+            display: none;
+        }
+        
+        /* Hide left-half completely */
+        .left-half {
+            display: none;
+        }
+        
+        /* Right-half takes full width and height */
+        .right-half {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 50px); /* Full remaining height */
+            z-index: 10;
+            background-image: url('images/background.gif'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+        
+        /* Accordion takes full width/height of container */
+        .accordion {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 50;
+        }
+        
+        /* Accordion items are positioned absolutely with transitions */
+        .accordion-item {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            transition: top 0.5s ease;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Header styling */
+        .accordion-header {
+            height: 60px;
+            background-color: #e9e9e9;
+            outline: 1px solid #0900BA;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 30px;
+            z-index: 10;
+        }
+        
+        .accordion-header:hover {
+            background-color: #c3ff00;
+        }
+        
+        /* Content area styling */
+        .accordion-content {
+            background-color: #e9e9e9;
+            max-height: 0;
+            overflow-y: auto;
+            transition: max-height 0.5s ease;
+            z-index: 5;
+        }
+        
+        /* Ensure solid background for content */
+        .content-inner {
+            background-color: #e9e9e9;
+            padding: 20px;
+        }
+        
+        /* Modal adjustments for mobile */
+        .overlay {
+            z-index: 2000;
+            overflow-y: scroll;
+        }
+        
+        .info-modal {
+            position: relative;
+            width: 95%;
+            margin: 0 auto;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 5px;
+            z-index: 2001;
+            display: none;
+            max-height: none; /* Remove any max-height constraint */
+            height: auto; /* Let it expand to fit content */
+            overflow: visible; /* Don't constrain content */
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .team-grid {
+            grid-template-columns: 1fr 1fr; /* Single column on mobile */
+        }
+        
+        .team-member {
+            margin-bottom: 30px;
+        }
+        
+        .contact-grid {
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 30px;
+        }
+        
+        body.modal-open {
+            position: fixed;
+            width: 100%;
+        }
+            }
     </style>
 </head>
 <body>
