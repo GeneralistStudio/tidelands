@@ -526,13 +526,13 @@
     
     /* Header styling */
     .accordion-header {
-        height: 90px;
+        height: 60px;
         background-color: #e9e9e9;
         outline: 1px solid #0900BA;
         display: flex;
         align-items: center;
         padding: 0 20px;
-        font-size: 40px;
+        font-size: 30px;
         z-index: 10;
     }
     
@@ -564,7 +564,7 @@
         width: 95%;
         margin: 70px auto 20px;
         max-height: 80vh;
-        overflow: none;
+        overflow-y: scroll;
         z-index: 2400;
     }
     
@@ -854,7 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const accordionItems = document.querySelectorAll('.accordion-item');
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     const headerHeight = 100; // Match this to the .accordion-header height in CSS
-    const mobileHeaderHeight = 90; // Match this to the mobile .accordion-header height
+    const mobileHeaderHeight = 60; // Match this to the mobile .accordion-header height
     
     // Position the accordion items initially - stacked with no gaps
     function positionItemsDefault() {
