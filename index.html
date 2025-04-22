@@ -418,6 +418,7 @@
         height: 100vh;
         overflow: hidden;
         position: relative;
+        padding-top: 50px;
     }
     .right-half::before {
         content: "";
@@ -448,7 +449,7 @@
     
     /* Fixed title bar at top */
     .title {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -461,6 +462,7 @@
         background-color: #E6E7E8;
         outline: 1px solid #0900BA;
         color: #0900BA; /* Ensure text is visible */
+        -webkit-transform: translateZ(0);
     }
     
     /* Move info button into title bar */
@@ -496,7 +498,7 @@
     /* Right-half takes full width and height */
     .right-half {
         position: absolute;
-        top: 50px; /* Start immediately below title */
+        top: 50px;
         left: 0;
         width: 100%;
         height: calc(100vh - 50px); /* Full remaining height */
@@ -522,6 +524,7 @@
         position: absolute;
         left: 0;
         transition: top 0.5s ease;
+        -webkit-overflow-scrolling: touch;
     }
     
     /* Header styling */
@@ -558,6 +561,7 @@
     /* Modal adjustments for mobile */
     .overlay {
         z-index: 2000;
+        overflow: hidden;
     }
     
     .info-modal {
@@ -565,6 +569,7 @@
         margin: 70px auto 20px;
         max-height: 80vh;
         overflow-y: scroll;
+        overflow-x: hidden;
         z-index: 2400;
     }
     
@@ -584,6 +589,11 @@
     .contact-grid {
         grid-template-columns: 1fr 1fr; /* Single column on mobile */
         gap: 30px;
+    }
+    
+    body.modal-open {
+        position: fixed;
+        width: 100%;
     }
         }
     </style>
@@ -970,33 +980,43 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update the accordion header click handler
     accordionHeaders.forEach((header, index) => {
-        header.addEventListener('click', function() {
-            const item = this.parentElement;
-            const wasActive = item.classList.contains('active');
-            
-            // Close all items first
-            accordionItems.forEach(accItem => {
-                accItem.classList.remove('active');
-                accItem.querySelector('.accordion-content').style.maxHeight = '0';
-            });
-            
-            // If clicked item wasn't active before, open it
-            if (!wasActive) {
-                item.classList.add('active');
-                positionItemsWithActive(index);
+            header.addEventListener('click', function(e) {
+                // Prevent default behavior
+                e.preventDefault();
                 
-                // In mobile view, scroll to make sure the header is visible
-                if (window.innerWidth <= 768) {
-                    setTimeout(() => {
-                        header.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
+                const item = this.parentElement;
+                const wasActive = item.classList.contains('active');
+                
+                // Close all items first
+                accordionItems.forEach(accItem => {
+                    accItem.classList.remove('active');
+                    accItem.querySelector('.accordion-content').style.maxHeight = '0';
+                });
+                
+                // If clicked item wasn't active before, open it
+                if (!wasActive) {
+                    item.classList.add('active');
+                    positionItemsWithActive(index);
+                    
+                    // In mobile view, scroll to make sure the header is visible
+                    if (window.innerWidth <= 768) {
+                        // Use setTimeout to let the DOM update first
+                        setTimeout(() => {
+                            // Scroll with offset for the fixed header
+                            const headerTop = header.getBoundingClientRect().top;
+                            const titleHeight = 50; // Height of your title bar
+                            window.scrollTo({
+                                top: window.pageYOffset + headerTop - titleHeight,
+                                behavior: 'smooth'
+                            });
+                        }, 100);
+                    }
+                } else {
+                    // Return to default positions
+                    positionItemsDefault();
                 }
-            } else {
-                // Return to default positions
-                positionItemsDefault();
-            }
+            });
         });
-    });
     
     // Info button toggle
     let infoOpen = false;
@@ -1009,6 +1029,7 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.style.display = "block";
             infoModal.style.display = "block";
             infoOpen = true;
+            document.body.classList.add('modal-open'); 
         } else {
             // Close info modal
             infoButton.innerHTML = "i";
@@ -1016,6 +1037,7 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.style.display = "none";
             infoModal.style.display = "none";
             infoOpen = false;
+            document.body.classList.remove('modal-open');
         }
     });
     
@@ -1027,6 +1049,7 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.style.display = "none";
             infoModal.style.display = "none";
             infoOpen = false;
+            document.body.classList.remove('modal-open');
         }
     });
     
