@@ -561,16 +561,21 @@
     /* Modal adjustments for mobile */
     .overlay {
         z-index: 2000;
-        overflow: hidden;
+        overflow-y: scroll;
     }
     
     .info-modal {
+        position: relative;
         width: 95%;
-        margin: 70px auto 20px;
-        max-height: 80vh;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        z-index: 2400;
+        margin: 0 auto;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 5px;
+        z-index: 2001;
+        display: none;
+        max-height: none; /* Remove any max-height constraint */
+        height: auto; /* Let it expand to fit content */
+        overflow: visible; /* Don't constrain content */
     }
     
     .info-grid {
@@ -587,7 +592,7 @@
     }
     
     .contact-grid {
-        grid-template-columns: 1fr 1fr; /* Single column on mobile */
+        grid-template-columns: 1fr; /* Single column on mobile */
         gap: 30px;
     }
     
