@@ -261,7 +261,7 @@
             margin: 0 auto;
             background-color: white;
             border: 1px solid black;
-            border-radius: 5px;
+            border-radius: 20px;
             z-index: 2001;
             display: none;
         }
@@ -278,12 +278,14 @@
 
         .info-section {
             margin-bottom: 40px;
+            text-align: center;
         }
 
         /* Center titles in info-modal */
         .info-modal .info-section h2 {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            font-size: 30px;
             border-bottom: 1px solid #ddd;
             text-align: center;
             font-weight: normal;
@@ -295,11 +297,12 @@
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
             margin-bottom: 30px;
+            text-align: center; /* Center content in each cell */
         }
 
         /* Team member styling */
         .team-member {
-            text-align: left;
+            text-align: center;
         }
 
         .team-member p {
@@ -326,14 +329,14 @@
         .contact-divider {
             height: 1px;
             background-color: #ddd;
-            margin: 20px 0;
+            margin: 60px 0;
         }
 
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            text-align: left;
+            text-align: center;
         }
 
         .contact-column a {
@@ -357,7 +360,26 @@
         .info-section p {
             line-height: 1.6;
             margin-bottom: 15px;
+            color: #4f4f4f;
+            text-decoration: none;
+            font-weight: normal;
+            font-size: small;
         }
+        
+        .info-section strong a {
+            line-height: 1.6;
+            text-decoration: none;
+            margin-bottom: 15px;
+            color: #000000;
+            font-size: 16px;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+
+        .info-section a:hover{
+            text-decoration: underline; 
+        }
+
         .top-gradient {
             position: absolute;
             top: 0;
@@ -458,6 +480,63 @@
             transform: scale(0.99);
         }
 
+        .info-section:nth-child(2) .team-grid {
+            display: flex;
+            justify-content: center;
+        }
+
+        .info-section:nth-child(2) .team-member:nth-child(3) {
+            text-align: center;
+            grid-column: 2; /* Position in the middle column */
+            margin: 0 auto; /* Center horizontally */
+        }
+
+        .info-section:nth-child(2) .team-member:nth-child(1),
+        .info-section:nth-child(2) .team-member:nth-child(3),
+        .info-section:nth-child(2) .team-member:nth-child(4),
+        .info-section:nth-child(2) .team-member:nth-child(5) {
+            display: none;
+        }
+
+        .sponsors-section {
+            text-align: center;
+        }
+
+        .sponsors-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .sponsor-item {
+            text-align: center;
+            width: 100%;
+            max-width: 400px; /* Adjust as needed */
+        }
+
+        .sponsor-item a {
+            line-height: 1.6;
+            text-decoration: none;
+            margin-bottom: 15px;
+            color: #000000;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .sponsor-item a:hover {
+            text-decoration: underline;
+        }
+
+        .sponsor-item p {
+            margin-bottom: 5px;
+            font-size: small;
+        }
+
+
+
         @media (min-width: 769px) {
             .right-half {
             background-image: url('images/dither-animation-wide.gif');
@@ -489,6 +568,10 @@
 
         .image-modal {
             max-width: 95%;
+        }
+
+        .sponsor-item {
+        max-width: 100%;
         }
 
         .content-inner img {
@@ -652,10 +735,11 @@
             margin: 0 auto;
             background-color: white;
             border: 1px solid black;
-            border-radius: 5px;
+            border-radius: 10px;
             z-index: 2001;
             display: none;
             max-height: none; /* Remove any max-height constraint */
+            margin-top: 20px;
             height: auto; /* Let it expand to fit content */
             overflow: visible; /* Don't constrain content */
         }
@@ -690,6 +774,7 @@
         .contact-grid {
             grid-template-columns: 1fr; /* Single column on mobile */
             gap: 30px;
+            text-align: center;
         }
         
         body.modal-open {
@@ -702,12 +787,6 @@
             top: 50px; /* Match the title bar height */
             height: calc(100% - 50px);
             position: fixed;
-        }
-
-        /* Make info-modal height adjust properly */
-        .info-modal {
-            margin-top: 20px;
-            overflow-y: visible;
         }
 
         /* Make sure the title and info button remain visible */
@@ -827,20 +906,20 @@
                     <div class="team-grid">
                         <!-- Row 1 -->
                         <div class="team-member">
-                            <p><strong>Annie Chen</strong><br>Project Director</p>
+                            <p><strong><a href="https://www.beamstudio.earth/" target="_blank">Annie Chen</a></strong><br>Creative Director & Futurist</p>
                         </div>
                         <div class="team-member">
-                            <p><strong>Zoe Lee</strong><br>Producer</p>
+                            <p><strong><a href="https://www.beamstudio.earth/" target="_blank">Zoe Lee</a></strong><br>Producer & Co-Creation Filmmaker</p>
                         </div>
                         <div class="team-member">
-                            <p><strong>Ellen Fritz</strong><br>XR Artist & Producer</p>
+                            <p><strong><a href="https://petri-soup.glitch.me/" target="_blank">Ellen Fritz</a></strong><br>XR Producer & Artist</p>
                         </div>
                         <!-- Row 2 -->
                         <div class="team-member">
-                            <p><strong>Ram Charan</strong><br>Architectural Designer & Futurist</p>
+                            <p><strong><a href="https://www.google.com/url?q=https://www.linkedin.com/in/ram-charan-35b403190/&sa=D&source=docs&ust=1745450537256758&usg=AOvVaw2Mmnh9G-Z3vigXYRQ6XgoT" target="_blank">Ram Charan</a></strong><br>Architectural Designer & Researcher</p>
                         </div>
                         <div class="team-member">
-                            <p><strong>Ryan Lettieri</strong><br>Web Developer & Worldbuilder</p>
+                            <p><strong><a href="https://ryanlettieri.com/" target="_blank">Ryan Lettieri</a></strong><br>Web Developer & Worldbuilder<br><br><br><br><br></p>
                         </div>
                         <div class="team-member">
                         </div>
@@ -851,22 +930,61 @@
                     <div class="team-grid">
                         <!-- Row 1 -->
                         <div class="team-member">
-                            <p><strong>Annie Chen</strong><br>Project Director</p>
+                            <p><strong></strong><br></p>
                         </div>
                         <div class="team-member">
-                            <p><strong>Zoe Lee</strong><br>Producer</p>
+                            <p><strong><a href="https://web.uri.edu/dwell/meet/madison-jones/" target="_blank">Madison Jones</a></strong><br>University of Rhode Island, DWELL Lab<br><br><br><br><br></p>
                         </div>
                         <div class="team-member">
-                            <p><strong>Ellen Fritz</strong><br>XR Artist & Producer</p>
+                            <p><strong></strong><br></p>
                         </div>
                         <!-- Row 2 -->
                         <div class="team-member">
-                            <p><strong>Ram Charan</strong><br>Architectural Designer & Futurist</p>
+                            <p><strong></strong><br></p>
                         </div>
                         <div class="team-member">
-                            <p><strong>Ryan Lettieri</strong><br>Web Developer & Worldbuilder</p>
+                            <p><strong></strong><br></p>
                         </div>
                         <div class="team-member">
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h2>CO-CREATORS & GUEST CONTRIBUTORS</h2>
+                    <div class="team-grid">
+                        <!-- Row 1 -->
+                        <div class="team-member">
+                            <p><strong><a href="https://www.risd.edu/academics/architecture/faculty/lafayette-cruise" target="_blank">Lafayette Cruise</a></strong><br>Rhode Island School of Design, Architecture</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong><a href="https://maxwellfertik.com/" target="_blank">Maxwell Fertik</a></strong><br>Indiana University, Eskenazi School of Art, Architecture + Design</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong><a href="https://www.linkedin.com/in/audrey-sarin/" target="_blank">Audrey Sarin</a></strong><br>MIT-WHOI Joint Program</p>
+                        </div>
+                        <!-- Row 2 -->
+                        <div class="team-member">
+                            <p><strong><a href="https://www.jamesvyn.studio/" target="_blank">James Vincent Brice</a></strong><br>MIT-WHOI Joint Program</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong><a href="https://www.risd.edu/academics/architecture/faculty/manuel-cordero-alvarado" target="_blank">Manuel Cordero</a></strong><br>CIVIC / DownCity Design / RISD</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong><a href="https://www.risd.edu/academics/architecture/faculty/trevor-herman-hilker" target="_blank">Trevor Herman Hilker</a></strong><br>Rhode Island School of Design, Architecture</p>
+                        </div>
+                        <!-- Row 3 -->
+                        <div class="team-member">
+                            <p><strong><a href="https://garrettvercoe.com/" target="_blank">Garrett Vercoe</a></strong><br>SPOLIA<br><br></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section sponsors-section">
+                    <div class="sponsors-grid">
+                        <div class="sponsor-item">
+                            <p><a href="https://www.sea-ahead.com/bluegreeninnovation-challenge" target="_blank">SeaAhead Venture Studio</a><br><a href="https://wegefoundation.com/wege-prize-2022/" target="_blank">WEGE Prize</a><br><a href="https://risdmaharamfellows.com/" target="_blank">Maharam Fellowship</a></p>
+                        </div>
+                        <div class="sponsor-item">
+                            <p>This project was incubated at <a href="https://garrettvercoe.com/" target="_blank">WORLDING 2025</a>, hosted by the <a href="https://garrettvercoe.com/" target="_blank">MIT Co-Creation Sutdio</a> in the <a href="https://garrettvercoe.com/" target="_blank">Open Documentary Labratory</a>.<br><br></p>
                         </div>
                     </div>
                 </div>
@@ -877,7 +995,14 @@
                             <p>GENERAL INQUIRIES<br><a href="mailto:hello@beamstudio.earth">HELLO@BEAMSTUDIO.EARTH</a></p>
                         </div>
                         <div class="contact-column">
-                            <p>INSTAGRAM<br><a href="https://www.instagram.com/beam.earth/" target="_blank">@BEAM.EARTH</a></p>
+                            <p>INSTAGRAM<br><a href="https://www.instagram.com/beam.earth/" target="_blank">@BEAM.EARTH</a><br><br><br><br><br><br></p>
+                        </div>
+                    </div>
+                    <div class="info-section sponsors-section">
+                        <div class="sponsors-grid">
+                            <div class="sponsor-item">
+                                <p>WEBSITE DESIGNED BY RYAN LETTIERI ©2025</p>
+                            </div>
                         </div>
                     </div>
                 </div>
