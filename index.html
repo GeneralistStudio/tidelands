@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tidelands 2100</title>
@@ -102,10 +103,10 @@
 
         .accordion-item {
             width: 100%;
-            transition: transform 0.5s ease;
             position: absolute;
             left: 0;
             outline: 1px solid #0900BA;
+            transition: top 0.5s ease; /* Change from transform to top transition */
         }
 
         .accordion-header {
@@ -130,14 +131,17 @@
         .accordion-content {
             background-color: #e9e9e9;
             max-height: 0;
-            overflow-y: auto;
+            overflow-y: hidden;
             transition: max-height 0.5s ease;
             position: relative;
-            z-index: 5; /* Content sits below headers */
+            z-index: 5;
         }
 
         .content-inner {
             padding: 20px;
+            background-color: #e9e9e9;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .content-inner h2 {
@@ -158,6 +162,15 @@
         .accordion-item.active .accordion-content {
             max-height: calc(100vh - 300px); /* Adjusted for 100px header height and 50px bottom bar */
             overflow-y: auto;
+        }
+
+        .accordion-item.active .content-inner {
+            opacity: 1;
+            transition: opacity 0.3s ease 0.2s; /* Delay opacity transition */
+        }
+        @keyframes fadeContent {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
         }
 
         /* Bottom Bar Styles */
@@ -200,7 +213,7 @@
             color: #0900BA;
             border-color: transparent;
             box-shadow: 1px 1px 5px black;
-                        transition: all 0.2s ease;
+            transition: all 0.2s ease;
 
         }
 
@@ -435,8 +448,8 @@
             width: 100%;
             height: 70%;
             background: linear-gradient(to bottom, 
-                        rgba(197, 255, 25, 0) 0%, /* Start transparent at the top */
-                        rgba(0, 0, 0, 0.339) 50%, /* Full color starts lower down */
+                        rgb(197, 255, 25) 0%, /* Start transparent at the top */
+                        rgb(197, 255, 25) 45%, /* Full color starts lower down */
                         transparent 100%); /* Fade to transparent at the bottom */
             z-index: 5; /* Above background image but below content */
             pointer-events: none; /* Allow interaction with elements below */
@@ -449,7 +462,7 @@
             left: 0;
             width: 100%;
             height: 25%;
-            background: linear-gradient(to top, rgb(197, 255, 25, 0.935), transparent);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.599), transparent);
             z-index: 5; /* Above background image but below content */
             pointer-events: none; /* Allow interaction with elements below */
         }
@@ -544,10 +557,16 @@
             padding: 0 20px;
             font-size: 30px;
             z-index: 10;
+            cursor: pointer;
         }
         
         .accordion-header:hover {
-            background-color: #c3ff00;
+            background-color: #e9e9e9; /* Reset to default */
+        }
+
+        .accordion-item.active .accordion-header {
+        background-color: #c3ff00;
+        outline: 1px solid;
         }
         
         /* Content area styling */
@@ -561,6 +580,7 @@
         
         /* Ensure solid background for content */
         .content-inner {
+            opacity: 1;
             background-color: #e9e9e9;
             padding: 20px;
         }
@@ -583,6 +603,20 @@
             max-height: none; /* Remove any max-height constraint */
             height: auto; /* Let it expand to fit content */
             overflow: visible; /* Don't constrain content */
+        }
+
+        .info-button:hover {
+            background-color: white; /* Reset to default */
+            color: #0900BA;
+            border-color: #0900BA;
+            box-shadow: none;
+        }
+    
+        .info-button.active {
+            background-color: #c3ff00;
+            color: #0900BA;
+            border-color: transparent;
+            box-shadow: 1px 1px 5px black;
         }
         
         .info-grid {
@@ -748,7 +782,7 @@
     </div>
 
     <script>
-        // Updated script to fix title and info button visibility in mobile
+// Updated script to fix animations and ensure consistent background
 document.addEventListener('DOMContentLoaded', function() {
     // Crosshair cursor
     const crosshair = document.querySelector('.crosshair');
@@ -871,101 +905,111 @@ document.addEventListener('DOMContentLoaded', function() {
         }        
     });
     
-    // Accordion functionality for desktop
+    // Accordion functionality
     const accordion = document.getElementById('accordion');
     const accordionItems = document.querySelectorAll('.accordion-item');
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     const headerHeight = 100; // Match this to the .accordion-header height in CSS
     const mobileHeaderHeight = 60; // Match this to the mobile .accordion-header height
     
-    // Position the accordion items initially - stacked with no gaps
+    // Position the accordion items initially with absolute positioning
     function positionItemsDefault() {
-        if (window.innerWidth > 768) { // Desktop
-            accordionItems.forEach((item, i) => {
-                item.style.transform = `translateY(${i * headerHeight}px)`;
-                item.style.zIndex = `${accordionItems.length - i}`; // Higher items have higher z-index
-                item.style.top = ''; // Clear any mobile styles
-            });
-        } else { // Mobile
-            accordionItems.forEach((item, i) => {
-                item.style.transform = 'none';
-                item.style.top = `${i * mobileHeaderHeight}px`;
-                item.style.zIndex = `${accordionItems.length - i}`;
-            });
-        }
-    }
-    
-    // Position when an item is active - maintain stacking order at bottom
-    function positionItemsWithActive(activeIndex) {
-        if (window.innerWidth > 768) { // Desktop
-            const viewportHeight = window.innerHeight - 50; // Adjust for bottom bar
-            const itemsBelow = accordionItems.length - activeIndex - 1;
-            const bottomStackHeight = itemsBelow * headerHeight;
+        const isMobile = window.innerWidth <= 768;
+        const itemHeight = isMobile ? mobileHeaderHeight : headerHeight;
+        
+        accordionItems.forEach((item, i) => {
+            // Use top property for both mobile and desktop for consistency
+            item.style.top = `${i * itemHeight}px`;
+            item.style.zIndex = `${accordionItems.length - i}`; // Higher items have higher z-index
             
-            // Calculate the maximum space available for the content
-            const maxContentHeight = viewportHeight - ((activeIndex + 1) * headerHeight) - bottomStackHeight;
+            // Make sure transform is cleared
+            item.style.transform = 'none';
             
-            // Set the active content's max height
-            const activeContent = accordionItems[activeIndex].querySelector('.accordion-content');
-            activeContent.style.maxHeight = `${maxContentHeight}px`;
-            
-            accordionItems.forEach((item, i) => {
-                item.style.top = ''; // Clear mobile styles
-                
-                if (i <= activeIndex) {
-                    // Items before and including active stay at top
-                    item.style.transform = `translateY(${i * headerHeight}px)`;
-                } else {
-                    // Items after active go to bottom
-                    const bottomPos = viewportHeight - bottomStackHeight + ((i - activeIndex - 1) * headerHeight);
-                    item.style.transform = `translateY(${bottomPos}px)`;
-                }
-            });
-        } else { // Mobile
-            // Constants for mobile layout
-            const titleHeight = 50; // Height of the title bar
-            const totalHeight = window.innerHeight - titleHeight; // Total available height
-            const itemsCount = accordionItems.length;
-            
-            // Calculate how much space we need for all headers
-            const allHeadersHeight = itemsCount * mobileHeaderHeight;
-            
-            // Determine how much space we can use for content
-            // We need to ensure all headers fit on screen
-            let contentMaxHeight;
-            
-            // If active is the first item, we have more space
-            if (activeIndex === 0) {
-                // We need room for active header + all other headers at bottom
-                contentMaxHeight = totalHeight - mobileHeaderHeight - ((itemsCount - 1) * mobileHeaderHeight);
-            } else {
-                // We need room for headers above + active header + headers below
-                contentMaxHeight = totalHeight - (activeIndex * mobileHeaderHeight) - mobileHeaderHeight - ((itemsCount - activeIndex - 1) * mobileHeaderHeight);
+            // Reset the content-inner opacity
+            const contentInner = item.querySelector('.content-inner');
+            if (contentInner) {
+                contentInner.style.opacity = '0';
             }
             
-            // Ensure we have at least minimal space for content
+            // Make sure content has maxHeight 0
+            const content = item.querySelector('.accordion-content');
+            if (content) {
+                content.style.maxHeight = '0';
+            }
+        });
+    }
+    
+    // Position when an item is active - with absolute positioning
+    function positionItemsWithActive(activeIndex) {
+        const isMobile = window.innerWidth <= 768;
+        const headerSize = isMobile ? mobileHeaderHeight : headerHeight;
+        const bottomBarHeight = isMobile ? 0 : 50; // Bottom bar height for desktop
+        const titleHeight = isMobile ? 50 : 0; // Title height for mobile
+        const viewportHeight = window.innerHeight - bottomBarHeight - titleHeight;
+        
+        // Calculate available space
+        const activeItem = accordionItems[activeIndex];
+        const activeContent = activeItem.querySelector('.accordion-content');
+        const activeContentInner = activeItem.querySelector('.content-inner');
+        
+        if (isMobile) {
+            // Mobile positioning logic
+            const itemsCount = accordionItems.length;
+            const allHeadersHeight = itemsCount * headerSize;
+            
+            let contentMaxHeight;
+            if (activeIndex === 0) {
+                contentMaxHeight = viewportHeight - headerSize - ((itemsCount - 1) * headerSize);
+            } else {
+                contentMaxHeight = viewportHeight - (activeIndex * headerSize) - headerSize - ((itemsCount - activeIndex - 1) * headerSize);
+            }
+            
             contentMaxHeight = Math.max(contentMaxHeight, 50); // At least 50px for content
             
-            // Set active content height
-            const activeContent = accordionItems[activeIndex].querySelector('.accordion-content');
+            // Set the active content max height
             activeContent.style.maxHeight = `${contentMaxHeight}px`;
+            
+            // Fade in the content inner (not the background)
+            activeContentInner.style.opacity = '1';
             
             // Position all items
             accordionItems.forEach((item, i) => {
-                item.style.transform = 'none'; // Clear desktop styles
-                
                 if (i < activeIndex) {
-                    // Items before active stay at top in order
-                    item.style.top = `${i * mobileHeaderHeight}px`;
+                    // Items before active stay at top
+                    item.style.top = `${i * headerSize}px`;
                 } else if (i === activeIndex) {
                     // Active item follows previous headers
-                    item.style.top = `${activeIndex * mobileHeaderHeight}px`;
+                    item.style.top = `${activeIndex * headerSize}px`;
                 } else {
                     // Items after active go below the content
-                    // Start position = active header position + header height + content height
-                    const startPosition = (activeIndex * mobileHeaderHeight) + mobileHeaderHeight + contentMaxHeight;
-                    const positionFromStart = (i - activeIndex - 1) * mobileHeaderHeight;
+                    const startPosition = (activeIndex * headerSize) + headerSize + contentMaxHeight;
+                    const positionFromStart = (i - activeIndex - 1) * headerSize;
                     item.style.top = `${startPosition + positionFromStart}px`;
+                }
+            });
+        } else {
+            // Desktop positioning logic using absolute positioning
+            const itemsBelow = accordionItems.length - activeIndex - 1;
+            const bottomStackHeight = itemsBelow * headerSize;
+            
+            // Calculate the maximum space available for the content
+            const maxContentHeight = viewportHeight - ((activeIndex + 1) * headerSize) - bottomStackHeight;
+            
+            // Set the active content's max height
+            activeContent.style.maxHeight = `${maxContentHeight}px`;
+            
+            // Fade in the content inner (not the background)
+            activeContentInner.style.opacity = '1';
+            
+            // Position all items with absolute positioning
+            accordionItems.forEach((item, i) => {
+                if (i <= activeIndex) {
+                    // Items before and including active stay at top
+                    item.style.top = `${i * headerSize}px`;
+                } else {
+                    // Items after active go to bottom
+                    const bottomPos = viewportHeight - bottomStackHeight + ((i - activeIndex - 1) * headerSize);
+                    item.style.top = `${bottomPos}px`;
                 }
             });
         }
@@ -988,47 +1032,53 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize default positions
     setupMobileLayout(); // Initial setup for title
     positionItemsDefault();
-    handleLayoutChange(); // Initial check for device type
     
     // Update the accordion header click handler
     accordionHeaders.forEach((header, index) => {
-            header.addEventListener('click', function(e) {
-                // Prevent default behavior
-                e.preventDefault();
+        header.addEventListener('click', function(e) {
+            // Prevent default behavior
+            e.preventDefault();
+            
+            const item = this.parentElement;
+            const wasActive = item.classList.contains('active');
+            
+            // Close all items - reset content-inner opacity but keep backgrounds solid
+            accordionItems.forEach(accItem => {
+                accItem.classList.remove('active');
+                const content = accItem.querySelector('.accordion-content');
+                const contentInner = accItem.querySelector('.content-inner');
                 
-                const item = this.parentElement;
-                const wasActive = item.classList.contains('active');
+                if (content) {
+                    content.style.maxHeight = '0';
+                }
                 
-                // Close all items first
-                accordionItems.forEach(accItem => {
-                    accItem.classList.remove('active');
-                    accItem.querySelector('.accordion-content').style.maxHeight = '0';
-                });
-                
-                // If clicked item wasn't active before, open it
-                if (!wasActive) {
-                    item.classList.add('active');
-                    positionItemsWithActive(index);
-                    
-                    // In mobile view, scroll to make sure the header is visible
-                    if (window.innerWidth <= 768) {
-                        // Use setTimeout to let the DOM update first
-                        setTimeout(() => {
-                            // Scroll with offset for the fixed header
-                            const headerTop = header.getBoundingClientRect().top;
-                            const titleHeight = 50; // Height of your title bar
-                            window.scrollTo({
-                                top: window.pageYOffset + headerTop - titleHeight,
-                                behavior: 'smooth'
-                            });
-                        }, 100);
-                    }
-                } else {
-                    // Return to default positions
-                    positionItemsDefault();
+                if (contentInner) {
+                    contentInner.style.opacity = '0';
                 }
             });
+            
+            // If clicked item wasn't active before, open it
+            if (!wasActive) {
+                // Add active class and reposition all items
+                item.classList.add('active');
+                
+                // Force a reflow to ensure CSS changes apply immediately
+                void item.offsetHeight;
+                
+                positionItemsWithActive(index);
+                
+                // In mobile view, scroll to make sure the header is visible
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            } else {
+                // Return to default positions
+                positionItemsDefault();
+            }
         });
+    });
     
     // Info button toggle
     let infoOpen = false;
@@ -1070,13 +1120,66 @@ document.addEventListener('DOMContentLoaded', function() {
         handleLayoutChange();
     });
     
-    // Auto-open the Overview section (first accordion item)
-    const firstItem = accordionItems[0];
-    firstItem.classList.add('active');
-    
-    // Position items with first item active
-    setTimeout(() => {
+    // Auto-open the Overview section (first accordion item) with proper animation
+    setTimeout(function() {
+        // First position all items in default position with no transitions
+        accordionItems.forEach(item => {
+            item.style.transition = 'none';
+            
+            // Make sure all accordion-content elements have solid backgrounds
+            const content = item.querySelector('.accordion-content');
+            if (content) {
+                content.style.backgroundColor = '#e9e9e9';
+                content.style.maxHeight = '0';
+                content.style.transition = 'none';
+            }
+            
+            const contentInner = item.querySelector('.content-inner');
+            if (contentInner) {
+                contentInner.style.opacity = '0';
+                contentInner.style.transition = 'none';
+            }
+        });
+        
+        // Force a reflow
+        void accordion.offsetHeight;
+        
+        // Add active class to first item but don't reposition yet
+        const firstItem = accordionItems[0];
+        firstItem.classList.add('active');
+        
+        // Force reflow again
+        void accordion.offsetHeight;
+        
+        // Now enable transitions
+        accordionItems.forEach(item => {
+            item.style.transition = 'top 0.5s ease';
+            
+            const content = item.querySelector('.accordion-content');
+            if (content) {
+                content.style.transition = 'max-height 0.5s ease';
+            }
+            
+            const contentInner = item.querySelector('.content-inner');
+            if (contentInner) {
+                contentInner.style.transition = 'opacity 0.3s ease 0.2s';
+            }
+        });
+        
+        // Force reflow to ensure transitions are applied
+        void accordion.offsetHeight;
+        
+        // Now reposition items - this will animate because transitions are enabled
         positionItemsWithActive(0);
+        
+        // After maxHeight animation completes, fade in the content
+        setTimeout(() => {
+            const firstContentInner = firstItem.querySelector('.content-inner');
+            if (firstContentInner) {
+                firstContentInner.style.opacity = '1';
+            }
+        }, 300); // This delay should match the transition time
+        
     }, 100);
 });
     </script>
