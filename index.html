@@ -606,11 +606,6 @@
             left: 0;
             transition: top 0.5s ease;
             -webkit-overflow-scrolling: touch;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            will-change: top;
         }
         
         /* Header styling */
@@ -649,12 +644,6 @@
             opacity: 1;
             background-color: #e9e9e9;
             padding: 20px;
-        }
-        
-        /* Modal adjustments for mobile */
-        .overlay {
-            z-index: 2000;
-            overflow-y: scroll;
         }
         
         .info-modal {
@@ -707,6 +696,30 @@
             position: fixed;
             width: 100%;
         }
+        .overlay {
+            z-index: 2000;
+            overflow-y: scroll;
+            top: 50px; /* Match the title bar height */
+            height: calc(100% - 50px);
+            position: fixed;
+        }
+
+        /* Make info-modal height adjust properly */
+        .info-modal {
+            margin-top: 20px;
+            overflow-y: visible;
+        }
+
+        /* Make sure the title and info button remain visible */
+        .title {
+            z-index: 3000; /* Higher than the overlay */
+        }
+
+        /* Ensure image overlay behaves similarly */
+        .image-overlay {
+            top: 50px;
+            height: calc(100% - 50px);
+        }
             }
     </style>
 </head>
@@ -751,9 +764,11 @@
                     <div class="accordion-header">OVERVIEW</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <p>TIDELANDS is an extended reality (XR) artwork that immerses audiences in a speculative climate future along Potter’s Pond, Rhode Island—a coastline projected to be underwater by century’s end. Set in 2100, the piece follows a day in the life of a coastal community that has reclaimed a landscape once abandoned after flooding, evacuation, and state withdrawal. The narrative unfolds during an annual sealife harvest festival—a civic ritual rooted in regional and Indigenous traditions, reconfigured through reciprocity with water, weather, and more-than-human life.<br><br>
+                            <p>By 2100, Potters Pond will experience 9 inches sea level rise.<br><br> 
+                                TIDELANDS is an extended reality (XR) artwork that immerses audiences in a speculative climate future along Potter’s Pond, Rhode Island—a coastline projected to be underwater by century’s end. Set in 2100, the piece follows a day in the life of a coastal community that has reclaimed a landscape once abandoned after flooding, evacuation, and state withdrawal. The narrative unfolds during an annual sealife harvest festival—a civic ritual rooted in regional and Indigenous traditions, reconfigured through reciprocity with water, weather, and more-than-human life.
+                                <br><br>
                                 <img src="images/overview.png" alt="SCUP Aquaculture"><br><br>
-                                Through acts of gathering, cooking, and care, the rhythms of this floating village surface and take shape. Audiences move through interconnected sites: tidal greenhouses with salt-adapted crops, a wind-powered shellfish hatchery, a thriving fish co-op. Some are protopic extensions of current adaptive strategies; others emerge from the emotional logic of place—rituals of grief, memory, and reinvention. 
+                                Through acts of gathering, cooking, and care, the rhythms of this floating village surface and take shape. Audiences move through interconnected sites: tidal greenhouses with salt-adapted crops, a wind-powered shellfish hatchery, a thriving fish co-op. Some are protopic extensions of current adaptive strategies; others emerge from the emotional logic of place—rituals of grief, memory, and reinvention.<br><br>
                                 Built in Unity, TIDELANDS merges NOAA flood projections, 3D ecological scans, field-recorded soundscapes, site-specific architecture, and oral histories into an immersive environment rooted in real people and place. Growing from a multi-year collaboration with RI’s blue sector, it explores how XR can serve as both a storytelling medium and a civic tool for place-based co-creation of climate futures.<br><br>
                                 How do we want to live, when we can no longer live as we do now? Rather than accept coastal abandonment as inevitable, TIDELANDS offers a counter-imaginary to coastal displacement: a vision of climate resilience where our local communities with deep ties to the shore adapt—and even thrive—in the face of rising seas.</p>
                         </div>
@@ -765,8 +780,8 @@
                         <div class="content-inner">
                             <p>SCUP Aquaculture (2022–2025) was a design and research collective investigating how ocean infrastructure might serve both ecological regeneration and the livelihoods of coastal communities. Operating in the fraught space between offshore wind development and traditional fisheries, SCUP proposed a socio-technical solution: co-habited aquaculture platforms occupying underutilized zones around wind turbines. Developed in collaboration with aquaculturists, fisheries scientists, and wind developers, the first prototype—a modular, low-cost system of oyster cages, mussel lines, and buoys—was designed to strengthen Rhode Island’s food resilience by enabling sustainable protein cultivation in open ocean environments.<br><br>
                                 <img src="images/scup.png" alt="SCUP Aquaculture"><br><br>
-                            But SCUP was never just a technical intervention—it was a relational one. Built through interviews, workshops, and long-term partnerships with local fishers, scientists, and policymakers, the project revealed both the potential and the profound constraints of implementing such solutions at scale. Corporate control of ocean leases, a fractured regulatory system, and rigid insurance and liability frameworks posed structural barriers that innovation alone couldn’t solve.<br><br>
-                            These realities gave rise to Tidelands 2100—a deeper inquiry into the political, social, and economic conditions that must shift for projects like SCUP to truly take root. Where SCUP was a first-phase prototype, Tidelands 2100 is a generative framework—a co-created process for imagining coastal futures grounded not in top-down projections, but in the lived experiences, knowledge, and agency of the communities who call these coastlines home.
+                                But SCUP was never just a technical intervention—it was a relational one. Built through interviews, workshops, and long-term partnerships with local fishers, scientists, and policymakers, the project revealed both the potential and the profound constraints of implementing such solutions at scale. Corporate control of ocean leases, a fractured regulatory system, and rigid insurance and liability frameworks posed structural barriers that innovation alone couldn’t solve. <br><br>
+                                These realities gave rise to Tidelands 2100—a deeper inquiry into the political, social, and economic conditions that must shift for projects like SCUP to truly take root. Where SCUP was a first-phase prototype, Tidelands 2100 is a generative framework—a co-created process for imagining coastal futures grounded not in top-down projections, but in the lived experiences, knowledge, and agency of the communities who call these coastlines home.
                             </p>
                         </div>
                     </div>
@@ -777,9 +792,9 @@
                         <div class="content-inner">
                             <p>Based on NOAA and state-level climate projections, Potter’s Pond—an ecologically rich estuary and working waterfront in South Kingstown, RI—is expected to face up to nine feet of sea level rise over the next 75 years. This future is neither abstract nor benign. It is already reshaping a top-down narrative of coastal displacement and migration: redrawing shorelines, redefining insurance policies, and informing planning frameworks that determine who and what is worth saving.<br><br>
                                 <img src="images/housing.png" alt="SCUP Aquaculture"><br><br>
-                            These narratives of managed retreat too often ignore the lived knowledge, cultural histories, and ecological relationships that define place for coastal communities. For some, leaving is not simply a practical challenge; it is a loss of identity, practice, and way of life. It is erasure.<br><br>
-                            Tidelands challenges this logic. It resists the flattening of adaptation into evacuation plans and policy briefings, and instead invites local residents to envision futures beyond displacement. Through interviews, co-writing sessions, and workshops, this project brings aquaculturists, fishers, chefs, scientists, and Indigenous stewards into the imagination of new civic ecologies—expansive futures that cultivate healthier ways of knowing and being with our human and more-than-human neighbors.<br><br>
-                            By surfacing stories often excluded from formal planning processes, Tidelands enables a model of climate adaptation that is not reactive, but regenerative—rooted in relational knowledge and lived connection to a changing coast. Through the medium of XR, we aim to foster not just environmental resilience, but social transformation—where communities become agents in imagining and enacting their own futures.</p>
+                                These narratives of managed retreat too often ignore the lived knowledge, cultural histories, and ecological relationships that define place for coastal communities. For some, leaving is not simply a practical challenge; it is a loss of identity, practice, and way of life. It is erasure.<br><br>
+                                TIDELANDS challenges this logic. It resists the flattening of adaptation into evacuation plans and policy briefings, and instead invites local residents to envision futures beyond displacement. Through interviews, co-writing sessions, and workshops, this project brings aquaculturists, fishers, chefs, scientists, and Indigenous stewards into the imagination of new civic ecologies—expansive futures that cultivate healthier ways of knowing and being with our human and more-than-human neighbors.<br><br>
+                                By surfacing stories often excluded from formal planning processes, Tidelands enables a model of climate adaptation that is not reactive, but regenerative—rooted in relational knowledge and lived connection to a changing coast. Through the medium of XR, we aim to foster not just environmental resilience, but social transformation—where communities become agents in imagining and enacting their own futures.</p>
                         </div>
                     </div>
                 </div>
@@ -831,7 +846,30 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="info-section">
+                    <h2>ADVISORS</h2>
+                    <div class="team-grid">
+                        <!-- Row 1 -->
+                        <div class="team-member">
+                            <p><strong>Annie Chen</strong><br>Project Director</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong>Zoe Lee</strong><br>Producer</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong>Ellen Fritz</strong><br>XR Artist & Producer</p>
+                        </div>
+                        <!-- Row 2 -->
+                        <div class="team-member">
+                            <p><strong>Ram Charan</strong><br>Architectural Designer & Futurist</p>
+                        </div>
+                        <div class="team-member">
+                            <p><strong>Ryan Lettieri</strong><br>Web Developer & Worldbuilder</p>
+                        </div>
+                        <div class="team-member">
+                        </div>
+                    </div>
+                </div>
                 <div class="info-section">
                     <div class="contact-divider"></div>
                     <div class="contact-grid">
@@ -1081,58 +1119,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-                    // =====================
-                // NEW IMAGE MODAL FUNCTIONALITY
-                // =====================
-                const imageOverlay = document.getElementById('imageOverlay');
-                const imageModal = document.getElementById('imageModal');
-                const expandedImage = document.getElementById('expandedImage');
-                const closeImageModal = document.getElementById('closeImageModal');
-
-                // Find all images in content sections and add click handlers
-                function setupImageModals() {
-                    const contentImages = document.querySelectorAll('.content-inner img');
-                    
-                    contentImages.forEach(img => {
-                        img.addEventListener('click', function() {
-                            // Set the expanded image source
-                            expandedImage.src = this.src;
-                            expandedImage.alt = this.alt;
-                            
-                            // Show the modal
-                            imageOverlay.style.display = 'flex';
-                            document.body.classList.add('modal-open');
-                        });
-                    });
-                }
-
-                // Call this initially
-                setupImageModals();
-
-                // Close image modal when clicking outside the image
-                imageOverlay.addEventListener('click', function(e) {
-                    if (e.target === imageOverlay) {
-                        imageOverlay.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                    }
-                });
-
-                // Close image modal when pressing ESC key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && imageOverlay.style.display === 'flex') {
-                        imageOverlay.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                    }
-                });
-
-                // Setup image modals when accordion content changes
-                const accordionContents = document.querySelectorAll('.accordion-content');
-                accordionContents.forEach(content => {
-                    content.addEventListener('transitionend', function() {
-                        setupImageModals();
-                    });
-                });
-
     // Function to handle layout changes between mobile and desktop
     function handleLayoutChange() {
         setupMobileLayout(); // Handle title and info button positioning
@@ -1188,7 +1174,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // In mobile view, scroll to make sure the header is visible
                 if (window.innerWidth <= 768) {
                     setTimeout(() => {
-                        header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Instead of scrolling to the very top, scroll to position the header
+                        // with a small offset from the top of the viewport
+                        const headerRect = header.getBoundingClientRect();
+                        const scrollOffset = 20; // 20px buffer from top of screen
+                        const targetPosition = window.pageYOffset + headerRect.top - scrollOffset;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'auto' // Use 'auto' instead of 'smooth' for Safari compatibility
+                        });
                     }, 100);
                 }
             } else {
@@ -1198,14 +1193,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Info button toggle
+    // State variables for modals
     let infoOpen = false;
+    let imageModalOpen = false;
     
+    // Image overlay elements
+    const imageOverlay = document.getElementById('imageOverlay');
+    const imageModal = document.getElementById('imageModal');
+    const expandedImage = document.getElementById('expandedImage');
+    
+    // Info button toggle with support for both modals
     infoButton.addEventListener('click', function() {
+        // If image modal is open, close it
+        if (imageModalOpen) {
+            infoButton.innerHTML = "i";
+            infoButton.classList.remove('active');
+            imageOverlay.style.display = "none";
+            imageModalOpen = false;
+            document.body.classList.remove('modal-open');
+            return;
+        }
+        
+        // Toggle info modal
         if (!infoOpen) {
             // Open info modal
             infoButton.innerHTML = "X";
-            infoButton.classList.add('active'); // Add active class
+            infoButton.classList.add('active'); 
             overlay.style.display = "block";
             infoModal.style.display = "block";
             infoOpen = true;
@@ -1213,7 +1226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Close info modal
             infoButton.innerHTML = "i";
-            infoButton.classList.remove('active'); // Remove active class
+            infoButton.classList.remove('active');
             overlay.style.display = "none";
             infoModal.style.display = "none";
             infoOpen = false;
@@ -1221,16 +1234,97 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Close modal when clicking overlay (but not when clicking on the modal itself)
+    // Close info modal when clicking overlay
     overlay.addEventListener('click', function(e) {
         if (e.target === overlay) {
             infoButton.innerHTML = "i";
-            infoButton.classList.remove('active'); // Remove active class
+            infoButton.classList.remove('active');
             overlay.style.display = "none";
             infoModal.style.display = "none";
             infoOpen = false;
             document.body.classList.remove('modal-open');
         }
+    });
+    
+    // Image modal functionality
+    function setupImageModals() {
+        const contentImages = document.querySelectorAll('.content-inner img');
+        
+        contentImages.forEach(img => {
+            img.addEventListener('click', function() {
+                // Set the expanded image source
+                expandedImage.src = this.src;
+                expandedImage.alt = this.alt;
+                
+                // Show the modal
+                imageOverlay.style.display = 'flex';
+                document.body.classList.add('modal-open');
+                
+                // Update the button state
+                infoButton.innerHTML = "X";
+                infoButton.classList.add('active');
+                imageModalOpen = true;
+                
+                // Make sure info modal is closed if it was open
+                if (infoOpen) {
+                    overlay.style.display = "none";
+                    infoModal.style.display = "none";
+                    infoOpen = false;
+                }
+            });
+        });
+    }
+    
+    // Call this initially
+    setupImageModals();
+    
+    // Close image modal when clicking outside the image
+    imageOverlay.addEventListener('click', function(e) {
+        if (e.target === imageOverlay) {
+            imageOverlay.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            infoButton.innerHTML = "i";
+            infoButton.classList.remove('active');
+            imageModalOpen = false;
+        }
+    });
+    
+    // Unified ESC key handler for both modals
+    document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        // Prevent any text selection
+        document.getSelection().removeAllRanges();
+        
+        // Reset button state first
+        infoButton.innerHTML = "i";
+        infoButton.classList.remove('active');
+        
+        // Handle image modal
+        if (imageModalOpen) {
+            imageOverlay.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            imageModalOpen = false;
+        }
+        
+        // Handle info modal
+        if (infoOpen) {
+            overlay.style.display = 'none';
+            infoModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            infoOpen = false;
+        }
+        
+        // Prevent the button from receiving focus
+        document.activeElement.blur();
+    }
+});
+    
+    // Setup image modals when accordion content changes
+    const accordionContents = document.querySelectorAll('.accordion-content');
+    accordionContents.forEach(content => {
+        content.addEventListener('transitionend', function() {
+            setupImageModals();
+        });
     });
     
     // Handle window resize
@@ -1257,7 +1351,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 contentInner.style.opacity = '0';
                 contentInner.style.transition = 'none';
             }
-            setupImageModals();
         });
         
         // Force a reflow
@@ -1297,8 +1390,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (firstContentInner) {
                 firstContentInner.style.opacity = '1';
             }
+            
+            // Set up image modals after content is visible
+            setupImageModals();
         }, 300); // This delay should match the transition time
-        
     }, 100);
 });
     </script>
