@@ -128,6 +128,12 @@
             outline: 1px solid #0900BA;
         }
 
+        .accordion-header:active {
+            background: #c3ff00;
+            box-shadow: inset 1px 1px 5px black;
+            transition: none; /* Make the effect instant */
+        }
+
         .accordion-content {
             background-color: #e9e9e9;
             max-height: 0;
@@ -138,7 +144,7 @@
         }
 
         .content-inner {
-            padding: 20px;
+            padding: 20px 60px 20px 60px;
             background-color: #e9e9e9;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -157,6 +163,11 @@
             max-width: 100%;
             height: auto;
             margin: 15px 0;
+        }
+
+        .content-inner strong {
+            color: #0900BA;
+            font-weight: 500;
         }
 
         .accordion-item.active .accordion-content {
@@ -197,24 +208,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
+            cursor: none;
             background-color: white;
             font-weight: normal;
             font-size: 20px;
         }
 
         .info-button.active {
-            background-color: #0900BA;
-            color: white;
+            background-color: #c3ff00; /* Same hover color as accordion headers */
+            color: #0900BA;
+            border-color: #0900BA;
+            box-shadow: inset 1px 1px 5px black;
+            transition: none;
+
         }
 
         .info-button:hover {
-            background-color: #c3ff00; /* Same hover color as accordion headers */
+            background-color: #c3ff00;
             color: #0900BA;
-            border-color: transparent;
-            box-shadow: 1px 1px 5px black;
-            transition: all 0.2s ease;
-
         }
 
         .divider {
@@ -236,7 +247,8 @@
         .timeline-progress {
             height: 100%;
             width: 0%; /* Will be updated via JS */
-            background: #0000ff;
+            background: #c3ff00;
+            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.403);
             transition: width 0.3s ease;
         }
 
@@ -309,22 +321,6 @@
             margin-bottom: 15px;
         }
 
-        .team-image {
-            width: 100%;
-            padding-bottom: 100%; /* Creates a square aspect ratio */
-            position: relative;
-            overflow: hidden;
-        }
-
-        .team-image img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         /* Contact section */
         .contact-divider {
             height: 1px;
@@ -344,6 +340,7 @@
             text-decoration: none;
             font-weight: normal;
             font-size: 16px;
+            cursor: none;
         }
 
         .contact-column p {
@@ -373,6 +370,7 @@
             color: #000000;
             font-size: 16px;
             font-weight: normal;
+            cursor: none;
             text-transform: uppercase;
         }
 
@@ -406,7 +404,7 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 10001;
             mix-blend-mode: difference;
         }
 
@@ -521,9 +519,10 @@
             text-decoration: none;
             margin-bottom: 15px;
             color: #000000;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
             text-transform: uppercase;
+            cursor: none;
         }
 
         .sponsor-item a:hover {
@@ -532,11 +531,24 @@
 
         .sponsor-item p {
             margin-bottom: 5px;
-            font-size: small;
+            font-size: 14px;
         }
 
+        .highlight-line {
+            line-height: 1.6;
+            text-decoration: none;
+            color: #0900BA;
+            font-size: 18px;
+            font-weight: 400;
+        }
 
-
+        .accordion-divider {
+            height: 1px;
+            background-color: #b6b6b6;
+            margin: 20px auto;
+            width: 100%
+        }
+        
         @media (min-width: 769px) {
             .right-half {
             background-image: url('images/dither-animation-wide.gif');
@@ -709,8 +721,8 @@
         }
 
         .accordion-item.active .accordion-header {
-        background-color: #c3ff00;
-        outline: 1px solid;
+            background-color: #c3ff00;
+            outline: 1px solid;
         }
         
         /* Content area styling */
@@ -843,13 +855,14 @@
                     <div class="accordion-header">OVERVIEW</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <p>By 2100, Potters Pond will experience 9 inches sea level rise.<br><br> 
-                                TIDELANDS is an extended reality (XR) artwork that immerses audiences in a speculative climate future along Potter’s Pond, Rhode Island—a coastline projected to be underwater by century’s end. Set in 2100, the piece follows a day in the life of a coastal community that has reclaimed a landscape once abandoned after flooding, evacuation, and state withdrawal. The narrative unfolds during an annual sealife harvest festival—a civic ritual rooted in regional and Indigenous traditions, reconfigured through reciprocity with water, weather, and more-than-human life.
+                                <p><span class="highlight-line">By 2100, Potter's Pond, RI will experience 9+ inches of sea level rise. We're imagining a future beyond displacement.</span></p> 
+                                <div class="accordion-divider"></div>
+                                <p><i>TIDELANDS</i> is an extended reality (XR) experience that immerses audiences in a speculative climate future along Potter’s Pond, Rhode Island—a coastline projected to be underwater by century’s end. Set in 2100, the piece follows a day in the life of a coastal community that has reclaimed a landscape once abandoned after flooding, evacuation, and state withdrawal. The narrative unfolds during an annual sealife harvest festival—a civic ritual rooted in local traditions, reconfigured through reciprocity with water, weather, and more-than-human life.
                                 <br><br>
                                 <img src="images/overview.png" alt="SCUP Aquaculture"><br><br>
-                                Through acts of gathering, cooking, and care, the rhythms of this floating village surface and take shape. Audiences move through interconnected sites: tidal greenhouses with salt-adapted crops, a wind-powered shellfish hatchery, a thriving fish co-op. Some are protopic extensions of current adaptive strategies; others emerge from the emotional logic of place—rituals of grief, memory, and reinvention.<br><br>
-                                Built in Unity, TIDELANDS merges NOAA flood projections, 3D ecological scans, field-recorded soundscapes, site-specific architecture, and oral histories into an immersive environment rooted in real people and place. Growing from a multi-year collaboration with RI’s blue sector, it explores how XR can serve as both a storytelling medium and a civic tool for place-based co-creation of climate futures.<br><br>
-                                How do we want to live, when we can no longer live as we do now? Rather than accept coastal abandonment as inevitable, TIDELANDS offers a counter-imaginary to coastal displacement: a vision of climate resilience where our local communities with deep ties to the shore adapt—and even thrive—in the face of rising seas.</p>
+                                Built in Unity, <i>TIDELANDS</i> merges NOAA flood projections, 3D ecological scans, field-recorded soundscapes, site-specific architecture, and oral histories into an immersive environment rooted in real people and place. Growing from a multi-year collaboration with RI’s blue sector, it explores how XR can serve as both a storytelling medium and a civic tool for place-based co-creation of climate futures.<br><br>
+                                <i>How do we want to live, when we can no longer live as we do now? </i><br><br>
+                                Rather than accept coastal abandonment as inevitable, TIDELANDS offers a counter-imaginary to coastal displacement: a vision of climate resilience where our local communities with deep ties to the shore adapt—and even thrive—in the face of rising seas.</p>
                         </div>
                     </div>
                 </div>
@@ -857,10 +870,16 @@
                     <div class="accordion-header">BACKGROUND</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <p>SCUP Aquaculture (2022–2025) was a design and research collective investigating how ocean infrastructure might serve both ecological regeneration and the livelihoods of coastal communities. Operating in the fraught space between offshore wind development and traditional fisheries, SCUP proposed a socio-technical solution: co-habited aquaculture platforms occupying underutilized zones around wind turbines. Developed in collaboration with aquaculturists, fisheries scientists, and wind developers, the first prototype—a modular, low-cost system of oyster cages, mussel lines, and buoys—was designed to strengthen Rhode Island’s food resilience by enabling sustainable protein cultivation in open ocean environments.<br><br>
+                            <p><span class="highlight-line">The story of TIDELANDS begins with SCUP.</span></p>
+                            <div class="accordion-divider"></div>
+                            <p>SCUP Aquaculture (2023-2025) was an award-winning initiative responding to rising tensions in the state’s coastal economy—between offshore wind developers, shellfish farmers, and traditional fisheries. SCUP proposed a multi-use approach: shared aquaculture platforms sited within the underused buffer zones around offshore wind turbines.<br>
+                            <p>Developed in collaboration with aquaculturists, fisheries scientists, and wind developers, the first prototype—a modular, low-cost system of oyster cages, mussel lines, and buoys—was designed to strengthen Rhode Island’s food resilience by enabling sustainable protein cultivation in open ocean environments.<br><br>
                                 <img src="images/scup.png" alt="SCUP Aquaculture"><br><br>
-                                But SCUP was never just a technical intervention—it was a relational one. Built through interviews, workshops, and long-term partnerships with local fishers, scientists, and policymakers, the project revealed both the potential and the profound constraints of implementing such solutions at scale. Corporate control of ocean leases, a fractured regulatory system, and rigid insurance and liability frameworks posed structural barriers that innovation alone couldn’t solve. <br><br>
-                                These realities gave rise to Tidelands 2100—a deeper inquiry into the political, social, and economic conditions that must shift for projects like SCUP to truly take root. Where SCUP was a first-phase prototype, Tidelands 2100 is a generative framework—a co-created process for imagining coastal futures grounded not in top-down projections, but in the lived experiences, knowledge, and agency of the communities who call these coastlines home.
+                                But SCUP was never just a technical intervention—it was a relational one. It was built through long-term relationships: interviews, workshops, and field research with local fishers, scientists, and policymakers. These collaborations revealed both the potential of multi-use infrastructure and the structural barriers preventing it: corporate leasing, regulatory fragmentation, and inflexible liability frameworks. Even with strong community interest, the policy environment made implementation nearly impossible.<br><br>
+                                This is where our next phase, <i>TIDELANDS</i>, began. Rather than continue refining a design boxed in by those constraints, we shifted the inquiry:<br><br>
+                                <i>What kind of ecological, political, and cultural conditions would allow this project—and a truly integrated, community-led future—to take root?</i><br><br>
+                                <i>TIDELANDS</i> emerged from that question. Drawing insights we uncovered through SCUP, <i>TIDELANDS</i> envisions the conditions of tomorrow under which community-led adaptation becomes possible. This phase builds on the same foundation of community collaboration, environmental research, and local expertise—but moves beyond the limits of current policy and existing systems.<br><br>
+                                Where SCUP offered a first-phase prototype, <i>TIDELANDS</i> offers a generative framework: a co-created process for imagining coastal futures grounded not in top-down projections, but in the lived experiences and agency of communities who call these coastlines home.
                             </p>
                         </div>
                     </div>
@@ -869,11 +888,13 @@
                     <div class="accordion-header">VISION</div>
                     <div class="accordion-content">
                         <div class="content-inner">
+                            <p><span class="highlight-line">We envision a future where climate adaptation is not imposed from above, but imagined and shaped by the communities who live with the water.</span></p>
+                            <div class="accordion-divider"></div>
                             <p>Based on NOAA and state-level climate projections, Potter’s Pond—an ecologically rich estuary and working waterfront in South Kingstown, RI—is expected to face up to nine feet of sea level rise over the next 75 years. This future is neither abstract nor benign. It is already reshaping a top-down narrative of coastal displacement and migration: redrawing shorelines, redefining insurance policies, and informing planning frameworks that determine who and what is worth saving.<br><br>
                                 <img src="images/housing.png" alt="SCUP Aquaculture"><br><br>
                                 These narratives of managed retreat too often ignore the lived knowledge, cultural histories, and ecological relationships that define place for coastal communities. For some, leaving is not simply a practical challenge; it is a loss of identity, practice, and way of life. It is erasure.<br><br>
-                                TIDELANDS challenges this logic. It resists the flattening of adaptation into evacuation plans and policy briefings, and instead invites local residents to envision futures beyond displacement. Through interviews, co-writing sessions, and workshops, this project brings aquaculturists, fishers, chefs, scientists, and Indigenous stewards into the imagination of new civic ecologies—expansive futures that cultivate healthier ways of knowing and being with our human and more-than-human neighbors.<br><br>
-                                By surfacing stories often excluded from formal planning processes, Tidelands enables a model of climate adaptation that is not reactive, but regenerative—rooted in relational knowledge and lived connection to a changing coast. Through the medium of XR, we aim to foster not just environmental resilience, but social transformation—where communities become agents in imagining and enacting their own futures.</p>
+                                <i>TIDELANDS</i> challenges this logic. It resists the flattening of adaptation into evacuation plans and policy briefings, and instead invites local residents to envision futures beyond displacement. Through interviews, co-writing sessions, and workshops, we’re bringing aquaculturists, fishers, chefs, scientists, and Indigenous stewards into the imagination of new civic ecologies—expansive futures that cultivate healthier ways of knowing and being with our human and more-than-human neighbors.<br><br>
+                                By surfacing stories often excluded from formal planning processes, <i>TIDELANDS</i> enables a model of climate adaptation that is not reactive, but regenerative—rooted in relational knowledge and lived connection to a changing coast. Through the medium of XR, we aim to foster not just environmental resilience, but social transformation—where communities become agents in imagining and enacting their own futures.</p>
                         </div>
                     </div>
                 </div>
@@ -881,7 +902,7 @@
                     <div class="accordion-header">FIELD NOTES</div>
                     <div class="accordion-content">
                         <div class="content-inner">
-                            <p>Check back for field notes!<br><br>
+                            <p>Check back soon for behind-the-scenes documentation of our research, design process, and public engagements!<br><br>
                             </p>
                         </div>
                     </div>
@@ -981,10 +1002,11 @@
                 <div class="info-section sponsors-section">
                     <div class="sponsors-grid">
                         <div class="sponsor-item">
+                            <p>With support from:</p>
                             <p><a href="https://www.sea-ahead.com/bluegreeninnovation-challenge" target="_blank">SeaAhead Venture Studio</a><br><a href="https://wegefoundation.com/wege-prize-2022/" target="_blank">WEGE Prize</a><br><a href="https://risdmaharamfellows.com/" target="_blank">Maharam Fellowship</a></p>
                         </div>
                         <div class="sponsor-item">
-                            <p>This project was incubated at <a href="https://garrettvercoe.com/" target="_blank">WORLDING 2025</a>, hosted by the <a href="https://garrettvercoe.com/" target="_blank">MIT Co-Creation Sutdio</a> in the <a href="https://garrettvercoe.com/" target="_blank">Open Documentary Labratory</a>.<br><br></p>
+                            <p>This project was incubated at <a href="https://cocreationstudio.mit.edu/worlding-2025/" target="_blank">WORLDING 2025</a>, hosted by the <a href="https://cocreationstudio.mit.edu/" target="_blank">MIT Co-Creation Sutdio</a> in the <a href="https://opendoclab.mit.edu/" target="_blank">Open Documentary Labratory</a>.<br><br></p>
                         </div>
                     </div>
                 </div>
@@ -1073,10 +1095,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalFrames = images.length;
     let currentFrame = 0;
     
-    // Scroll control variables
-    let lastScrollTime = 0;
-    const scrollCooldown = 0; // milliseconds between allowed scroll actions
-    
+    // Enhanced scroll control variables
+    let scrollAccumulator = 0;
+    const frameChangeThreshold = 30; // Amount of scroll needed to change a frame
+    const momentumReduction = 0.7; // Reduces impact of trackpad momentum (0-1, lower = more reduction)
+    let isTrackpad = false; // Will be dynamically detected
+    const trackpadDeltaPrecision = 0.01; // Trackpads often send fractional deltas
+        
     // Timeline elements
     const timelineProgress = document.getElementById('timelineProgress');
     
@@ -1094,22 +1119,33 @@ document.addEventListener('DOMContentLoaded', function() {
         timelineProgress.style.width = `${progressPercentage}%`;
     }
     
-    // Handle scroll on left side to control image sequence
-    document.querySelector('.left-half').addEventListener('wheel', function(e) {
+    // Handle scroll on left side to control image sequence with improved momentum handling
+        document.querySelector('.left-half').addEventListener('wheel', function(e) {
         e.preventDefault();
         
-        // Check if enough time has passed since last scroll
-        const now = Date.now();
-        if (now - lastScrollTime < scrollCooldown) {
-            return; // Exit if scrolling too quickly
+        // Temporarily pause autoplay when user manually scrolls
+        tempPauseAutoPlay();
+        // Detect if likely a trackpad based on deltaY precision
+        // Most mouse wheels send integer values, trackpads often send precise decimals
+        if (Math.abs(e.deltaY) % 1 < trackpadDeltaPrecision) {
+            isTrackpad = false; // Likely a mouse wheel (integer delta)
+        } else {
+            isTrackpad = true; // Likely a trackpad (fractional delta)
         }
         
-        // Determine scroll direction, but use a threshold
-        const scrollThreshold = 2; // Adjust based on testing
+        // Apply momentum reduction to trackpad scrolling
+        let scrollAmount = e.deltaY;
+        if (isTrackpad) {
+            scrollAmount *= momentumReduction;
+        }
         
-        // Only change frame if scroll amount exceeds threshold
-        if (Math.abs(e.deltaY) >= scrollThreshold) {
-            const direction = e.deltaY > 0 ? 1 : -1;
+        // Accumulate scroll value
+        scrollAccumulator += scrollAmount;
+        
+        // Check if accumulated scroll has reached the threshold
+        if (Math.abs(scrollAccumulator) >= frameChangeThreshold) {
+            // Determine direction based on accumulator sign
+            const direction = scrollAccumulator > 0 ? 1 : -1;
             
             // Calculate new frame, but prevent wrapping around
             let newFrame = currentFrame + direction;
@@ -1127,11 +1163,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Update timeline
                 updateTimeline();
-                
-                // Update last scroll time
-                lastScrollTime = now;
             }
-        }        
+            
+            // Reset the accumulator, but keep remainder for smoother transitions
+            // This makes transitions more continuous rather than "sticky"
+            scrollAccumulator = 0;
+        }
     });
     
     // Accordion functionality
@@ -1166,6 +1203,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.style.maxHeight = '0';
             }
         });
+    }
+
+        // Auto-play controls
+    let autoPlayEnabled = true; // Start enabled by default
+    let autoPlayInterval = null;
+    const autoPlaySpeed = 500; // Time between frames in milliseconds (adjust as needed)
+
+    // Function to advance to the next frame
+    function advanceFrame() {
+        // Hide current frame
+        images[currentFrame].style.opacity = 0;
+        
+        // Calculate new frame
+        currentFrame = (currentFrame + 1) % totalFrames; // Use modulo to loop back to start
+        
+        // Show new frame
+        images[currentFrame].style.opacity = 1;
+        
+        // Update timeline smoothly
+        const progressPercentage = (currentFrame / (totalFrames - 1)) * 100;
+        timelineProgress.style.transition = 'width ' + (autoPlaySpeed * 0.95) + 'ms linear';
+        timelineProgress.style.width = `${progressPercentage}%`;
+    }
+
+    // Function to start auto-play
+    function startAutoPlay() {
+        if (!autoPlayInterval) {
+            autoPlayInterval = setInterval(advanceFrame, autoPlaySpeed);
+        }
+    }
+
+    // Function to temporarily pause auto-play (will resume after delay)
+    function tempPauseAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+            
+            // Resume after a delay when user stops interacting
+            setTimeout(startAutoPlay, 2000);
+
+            timelineProgress.style.transition = 'width 0.3s ease';
+        }
     }
     
     // Position when an item is active - with absolute positioning
@@ -1520,6 +1599,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setupImageModals();
         }, 300); // This delay should match the transition time
     }, 100);
+    startAutoPlay();
 });
     </script>
 
