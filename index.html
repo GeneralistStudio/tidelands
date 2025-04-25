@@ -248,7 +248,7 @@
             height: 100%;
             width: 0%; /* Will be updated via JS */
             background: #c3ff00;
-            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.403);
+            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.516);
             transition: width 0.3s ease;
         }
 
@@ -826,7 +826,6 @@
             <div class="top-gradient"></div>
             <div class="bottom-gradient"></div>
             <div class="image-sequence" id="imageSequence">
-                <!-- Placeholder images will be populated by JavaScript -->
                 <img src="images/1.gif" alt="Tidelands frame 1" data-frame="1">
                 <img src="images/2.gif" alt="Tidelands frame 2" data-frame="2">
                 <img src="images/3.gif" alt="Tidelands frame 3" data-frame="3">
@@ -847,6 +846,10 @@
                 <img src="images/18.gif" alt="Tidelands frame 18" data-frame="18">
                 <img src="images/19.gif" alt="Tidelands frame 19" data-frame="19">
                 <img src="images/20.gif" alt="Tidelands frame 20" data-frame="20">
+                <div class="scroll-indicator" id="scrollIndicator">
+                    <div class="scroll-circle"></div>
+                    <div class="scroll-text">SCROLL</div>
+                </div>
             </div>
         </div>
         <div class="right-half">
@@ -1006,7 +1009,7 @@
                             <p><a href="https://www.sea-ahead.com/bluegreeninnovation-challenge" target="_blank">SeaAhead Venture Studio</a><br><a href="https://wegefoundation.com/wege-prize-2022/" target="_blank">WEGE Prize</a><br><a href="https://risdmaharamfellows.com/" target="_blank">Maharam Fellowship</a></p>
                         </div>
                         <div class="sponsor-item">
-                            <p>This project was incubated at <a href="https://cocreationstudio.mit.edu/worlding-2025/" target="_blank">WORLDING 2025</a>, hosted by the <a href="https://cocreationstudio.mit.edu/" target="_blank">MIT Co-Creation Sutdio</a> in the <a href="https://opendoclab.mit.edu/" target="_blank">Open Documentary Labratory</a>.<br><br></p>
+                            <p>This project was incubated at <a href="https://garrettvercoe.com/" target="_blank">WORLDING 2025</a>, hosted by the <a href="https://garrettvercoe.com/" target="_blank">MIT Co-Creation Studio</a> in the <a href="https://garrettvercoe.com/" target="_blank">Open Documentary Lab</a>.<br><br></p>
                         </div>
                     </div>
                 </div>
@@ -1120,11 +1123,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Handle scroll on left side to control image sequence with improved momentum handling
-        document.querySelector('.left-half').addEventListener('wheel', function(e) {
+    document.querySelector('.left-half').addEventListener('wheel', function(e) {
         e.preventDefault();
         
-        // Temporarily pause autoplay when user manually scrolls
-        tempPauseAutoPlay();
         // Detect if likely a trackpad based on deltaY precision
         // Most mouse wheels send integer values, trackpads often send precise decimals
         if (Math.abs(e.deltaY) % 1 < trackpadDeltaPrecision) {
@@ -1203,48 +1204,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.style.maxHeight = '0';
             }
         });
-    }
-
-        // Auto-play controls
-    let autoPlayEnabled = true; // Start enabled by default
-    let autoPlayInterval = null;
-    const autoPlaySpeed = 500; // Time between frames in milliseconds (adjust as needed)
-
-    // Function to advance to the next frame
-    function advanceFrame() {
-        // Hide current frame
-        images[currentFrame].style.opacity = 0;
-        
-        // Calculate new frame
-        currentFrame = (currentFrame + 1) % totalFrames; // Use modulo to loop back to start
-        
-        // Show new frame
-        images[currentFrame].style.opacity = 1;
-        
-        // Update timeline smoothly
-        const progressPercentage = (currentFrame / (totalFrames - 1)) * 100;
-        timelineProgress.style.transition = 'width ' + (autoPlaySpeed * 0.95) + 'ms linear';
-        timelineProgress.style.width = `${progressPercentage}%`;
-    }
-
-    // Function to start auto-play
-    function startAutoPlay() {
-        if (!autoPlayInterval) {
-            autoPlayInterval = setInterval(advanceFrame, autoPlaySpeed);
-        }
-    }
-
-    // Function to temporarily pause auto-play (will resume after delay)
-    function tempPauseAutoPlay() {
-        if (autoPlayInterval) {
-            clearInterval(autoPlayInterval);
-            autoPlayInterval = null;
-            
-            // Resume after a delay when user stops interacting
-            setTimeout(startAutoPlay, 2000);
-
-            timelineProgress.style.transition = 'width 0.3s ease';
-        }
     }
     
     // Position when an item is active - with absolute positioning
@@ -1599,7 +1558,6 @@ document.addEventListener('DOMContentLoaded', function() {
             setupImageModals();
         }, 300); // This delay should match the transition time
     }, 100);
-    startAutoPlay();
 });
     </script>
 
