@@ -106,7 +106,7 @@
             position: absolute;
             left: 0;
             outline: 1px solid #0900BA;
-            transition: top 0.5s ease; /* Change from transform to top transition */
+            transition: top 0.35s ease; /* Change from transform to top transition */
         }
 
         .accordion-header {
@@ -119,8 +119,38 @@
             padding: 0 20px;
             font-size: 25px;
             font-weight: normal;
+            justify-content: flex-start; /* Start aligned */
             position: relative;
-            z-index: 10; /* Ensure headers are always above content */
+            z-index: 10;
+        }
+
+        .header-text {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.35s ease, left 0.35s ease, opacity 0.35s ease;
+            white-space: nowrap;
+        }
+
+        .primary-text {
+            left: 20px;
+            z-index: 2;
+        }
+
+        .secondary-text {
+            left: 20px; /* Same position as primary */
+            opacity: 0; /* Start hidden */
+            font-size: 16px;
+            z-index: 1;
+        }
+
+        .accordion-header.centered .primary-text {
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .accordion-header.centered .secondary-text {
+            opacity: 1; /* Fade in */
         }
 
         .accordion-header:hover {
@@ -138,7 +168,7 @@
             background-color: #e9e9e9;
             max-height: 0;
             overflow-y: hidden;
-            transition: max-height 0.5s ease;
+            transition: max-height 0.35s ease;
             position: relative;
             z-index: 5;
         }
@@ -219,8 +249,7 @@
             color: #0900BA;
             border-color: #0900BA;
             box-shadow: inset 1px 1px 5px black;
-            transition: none;
-
+            transition: box-shadow ease 0.2s;
         }
 
         .info-button:hover {
@@ -273,7 +302,7 @@
             margin: 0 auto;
             background-color: white;
             border: 1px solid black;
-            border-radius: 20px;
+            border-radius: 5px;
             z-index: 2001;
             display: none;
         }
@@ -356,7 +385,7 @@
 
         .info-section p {
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #4f4f4f;
             text-decoration: none;
             font-weight: normal;
@@ -431,6 +460,23 @@
             border-radius: 50%;
             background: white;
             transform: translate(-50%, -50%);
+        }
+
+            .cursor-text {
+            position: fixed;
+            pointer-events: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            font-weight: regular;
+            color: white;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            transform: translate(5px, -20px); /* Position to the right and above */
+            mix-blend-mode: difference;
+            z-index: 10001;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .image-overlay {
@@ -537,9 +583,12 @@
         .highlight-line {
             line-height: 1.6;
             text-decoration: none;
-            color: #0900BA;
-            font-size: 18px;
-            font-weight: 400;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 14px;
+            display: block; /* This ensures the element takes full width */
+            width: 100%; /* Makes sure the element spans the full width of its container */
         }
 
         .accordion-divider {
@@ -576,6 +625,10 @@
             overflow: hidden;
             position: relative;
             padding-top: 50px;
+        }
+
+        .cursor-text {
+            display: none;
         }
 
         .image-modal {
@@ -764,10 +817,11 @@
         }
     
         .info-button.active {
-            background-color: #c3ff00;
+            background-color: #c3ff00; /* Same hover color as accordion headers */
             color: #0900BA;
-            border-color: transparent;
-            box-shadow: 1px 1px 5px black;
+            border-color: #0900BA;
+            box-shadow: inset 1px 1px 5px black;
+            transition: box-shadow ease 0.2s;
         }
         
         .info-grid {
@@ -819,6 +873,7 @@
         <div class="vertical"></div>
         <div class="horizontal"></div>
         <div class="dot"></div>
+        <div class="cursor-text"></div>
       </div>
     <div class="container">
         <div class="left-half">
@@ -855,7 +910,7 @@
         <div class="right-half">
             <div class="accordion" id="accordion">
                 <div class="accordion-item" id="item1">
-                    <div class="accordion-header">OVERVIEW</div>
+                    <div class="accordion-header"><div class="header-text primary-text">OVERVIEW</div><div class="header-text secondary-text">00</div></div>
                     <div class="accordion-content">
                         <div class="content-inner">
                                 <p><span class="highlight-line">By 2100, Potter's Pond, RI will experience 9+ inches of sea level rise. We're imagining a future beyond displacement.</span></p> 
@@ -870,7 +925,7 @@
                     </div>
                 </div>
                 <div class="accordion-item" id="item2">
-                    <div class="accordion-header">BACKGROUND</div>
+                    <div class="accordion-header"><div class="header-text primary-text">BACKGROUND</div><div class="header-text secondary-text">01</div></div>
                     <div class="accordion-content">
                         <div class="content-inner">
                             <p><span class="highlight-line">The story of TIDELANDS begins with SCUP.</span></p>
@@ -888,7 +943,7 @@
                     </div>
                 </div>
                 <div class="accordion-item" id="item3">
-                    <div class="accordion-header">VISION</div>
+                    <div class="accordion-header"><div class="header-text primary-text">VISION</div><div class="header-text secondary-text">02</div></div>
                     <div class="accordion-content">
                         <div class="content-inner">
                             <p><span class="highlight-line">We envision a future where climate adaptation is not imposed from above, but imagined and shaped by the communities who live with the water.</span></p>
@@ -902,7 +957,7 @@
                     </div>
                 </div>
                 <div class="accordion-item" id="item4">
-                    <div class="accordion-header">FIELD NOTES</div>
+                    <div class="accordion-header"><div class="header-text primary-text">FIELD NOTES</div><div class="header-text secondary-text">03</div></div>
                     <div class="accordion-content">
                         <div class="content-inner">
                             <p>Check back soon for behind-the-scenes documentation of our research, design process, and public engagements!<br><br>
@@ -943,7 +998,7 @@
                             <p><strong><a href="https://www.google.com/url?q=https://www.linkedin.com/in/ram-charan-35b403190/&sa=D&source=docs&ust=1745450537256758&usg=AOvVaw2Mmnh9G-Z3vigXYRQ6XgoT" target="_blank">Ram Charan</a></strong><br>Architectural Designer & Researcher</p>
                         </div>
                         <div class="team-member">
-                            <p><strong><a href="https://ryanlettieri.com/" target="_blank">Ryan Lettieri</a></strong><br>Web Developer & Worldbuilder<br><br><br><br><br></p>
+                            <p><strong><a href="https://ryanlettieri.com/" target="_blank">Ryan Lettieri</a></strong><br>Web Developer & Worldbuilder<br><br></p>
                         </div>
                         <div class="team-member">
                         </div>
@@ -957,7 +1012,7 @@
                             <p><strong></strong><br></p>
                         </div>
                         <div class="team-member">
-                            <p><strong><a href="https://web.uri.edu/dwell/meet/madison-jones/" target="_blank">Madison Jones</a></strong><br>University of Rhode Island, DWELL Lab<br><br><br><br><br></p>
+                            <p><strong><a href="https://web.uri.edu/dwell/meet/madison-jones/" target="_blank">Madison Jones</a></strong><br>University of Rhode Island, DWELL Lab<br><br></p>
                         </div>
                         <div class="team-member">
                             <p><strong></strong><br></p>
@@ -1038,21 +1093,117 @@
     <script>
 // Updated script to fix animations and ensure consistent background
 document.addEventListener('DOMContentLoaded', function() {
-    // Crosshair cursor
+    // Get existing cursor elements
     const crosshair = document.querySelector('.crosshair');
     const vertical = document.querySelector('.vertical');
     const horizontal = document.querySelector('.horizontal');
     const dot = document.querySelector('.dot');
+    
+    // Create and append the cursor text element if it doesn't exist
+    let cursorText = document.querySelector('.cursor-text');
+    if (!cursorText) {
+        cursorText = document.createElement('div');
+        cursorText.className = 'cursor-text';
+        crosshair.appendChild(cursorText);
+    }
 
+    // Update cursor position and text
     document.addEventListener('mousemove', (e) => {
         const x = e.clientX;
         const y = e.clientY;
 
+        // Update crosshair position
         vertical.style.left = `${x}px`;
         horizontal.style.top = `${y}px`;
         dot.style.left = `${x}px`;
         dot.style.top = `${y}px`;
+        
+        // Update text position
+        cursorText.style.left = `${x}px`;
+        cursorText.style.top = `${y}px`;
+        
+        // Detect what element is being hovered
+        const hoveredElement = document.elementFromPoint(x, y);
+        
+        // Clear previous text
+        cursorText.style.opacity = '0';
+        
+        // Explicitly check for accordion headers first
+        if (hoveredElement && (
+            hoveredElement.classList.contains('accordion-header') || 
+            hoveredElement.closest('.accordion-header') ||
+            (hoveredElement.classList.contains('header-text') && hoveredElement.closest('.accordion-header'))
+        )) {
+            cursorText.textContent = 'CLICK';
+            cursorText.style.opacity = '1';
+        }
+        // Check if element or its parent is in the image sequence
+        else if (isElementInImageSequence(hoveredElement)) {
+            cursorText.textContent = 'SCROLL';
+            cursorText.style.opacity = '1';
+        }
+        // Check if element is any other clickable element
+        else if (isClickable(hoveredElement)) {
+            cursorText.textContent = 'CLICK';
+            cursorText.style.opacity = '1';
+        }
     });
+
+
+    function isElementInImageSequence(element) {
+        if (!element) return false;
+        
+        // Check if element itself is the image sequence
+        if (element.id === 'imageSequence' || element.closest('#imageSequence')) {
+            return true;
+        }
+        
+        // Check for image sequence parent
+        let parent = element;
+        while (parent && parent !== document.body) {
+            if (parent.id === 'imageSequence') {
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        
+        return false;
+    }
+
+    // Function to check if an element is clickable
+    function isClickable(element) {
+        if (!element) return false;
+        
+        // Check common clickable elements
+        const clickableTagNames = ['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'];
+        if (clickableTagNames.includes(element.tagName)) {
+            return true;
+        }
+        
+        // Check for elements with click-related CSS properties
+        const style = window.getComputedStyle(element);
+        if (style.cursor === 'pointer') {
+            return true;
+        }
+        
+        // Check for specific elements in your site
+        const clickableClasses = [
+            'accordion-header',
+            'info-button',
+            'content-inner img',  // Clickable images in content
+            'contact-column a',   // Contact links
+            'team-member a',      // Team member links
+            'sponsor-item a'      // Sponsor links
+        ];
+        
+        for (const className of clickableClasses) {
+            if (element.matches(className) || element.closest(className)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
     
     // Handle mobile layout - move title to container for mobile
     function setupMobileLayout() {
@@ -1171,7 +1322,29 @@ document.addEventListener('DOMContentLoaded', function() {
             scrollAccumulator = 0;
         }
     });
+
+    function isElementInImageSequence(element) {
+        if (!element) return false;
+        
+        // Check if element itself is the image sequence
+        if (element.id === 'imageSequence' || element.closest('#imageSequence')) {
+            return true;
+        }
+        
+        // Check for image sequence parent
+        let parent = element;
+        while (parent && parent !== document.body) {
+            if (parent.id === 'imageSequence') {
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        
+        return false;
+    }
     
+    
+
     // Accordion functionality
     const accordion = document.getElementById('accordion');
     const accordionItems = document.querySelectorAll('.accordion-item');
@@ -1309,6 +1482,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const item = this.parentElement;
             const wasActive = item.classList.contains('active');
             
+            // Reset all headers to default position first
+            accordionHeaders.forEach(h => {
+                h.classList.remove('centered');
+            });
+            
             // Close all items - reset content-inner opacity but keep backgrounds solid
             accordionItems.forEach(accItem => {
                 accItem.classList.remove('active');
@@ -1324,10 +1502,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // If clicked item wasn't active before, open it
+            // If clicked item wasn't active before, open it and center its header
             if (!wasActive) {
                 // Add active class and reposition all items
                 item.classList.add('active');
+                
+                // Center the header of the active item
+                this.classList.add('centered');
                 
                 // Force a reflow to ensure CSS changes apply immediately
                 void item.offsetHeight;
@@ -1523,21 +1704,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const firstItem = accordionItems[0];
         firstItem.classList.add('active');
         
+        // Center the first header
+        const firstHeader = firstItem.querySelector('.accordion-header');
+        firstHeader.classList.add('centered');
+        
         // Force reflow again
         void accordion.offsetHeight;
         
         // Now enable transitions
         accordionItems.forEach(item => {
-            item.style.transition = 'top 0.5s ease';
+            item.style.transition = 'top 0.35s ease';
             
             const content = item.querySelector('.accordion-content');
             if (content) {
-                content.style.transition = 'max-height 0.5s ease';
+                content.style.transition = 'max-height 0.35s ease';
             }
             
             const contentInner = item.querySelector('.content-inner');
             if (contentInner) {
                 contentInner.style.transition = 'opacity 0.3s ease 0.2s';
+            }
+            
+            // Enable transitions for header text
+            const headerText = item.querySelector('.header-text');
+            if (headerText) {
+                headerText.style.transition = 'transform 0.35s ease, left 0.35s ease';
             }
         });
         
