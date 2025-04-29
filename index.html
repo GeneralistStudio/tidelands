@@ -137,11 +137,13 @@
             z-index: 2;
         }
 
-        .secondary-text {
+        .secondary-image {
             left: 20px; /* Same position as primary */
             opacity: 0; /* Start hidden */
-            font-size: 16px;
             z-index: 1;
+            height: 25px; /* Adjust height as needed */
+            width: auto;
+            object-fit: contain;
         }
 
         .accordion-header.centered .primary-text {
@@ -149,7 +151,7 @@
             transform: translate(-50%, -50%);
         }
 
-        .accordion-header.centered .secondary-text {
+        .accordion-header.centered .secondary-image {
             opacity: 1; /* Fade in */
         }
 
@@ -160,7 +162,7 @@
 
         .accordion-header:active {
             background: #c3ff00;
-            box-shadow: inset 1px 1px 5px black;
+            box-shadow: inset 1px 1px 5px #0900BA;
             transition: none; /* Make the effect instant */
         }
 
@@ -248,7 +250,7 @@
             background-color: #c3ff00; /* Same hover color as accordion headers */
             color: #0900BA;
             border-color: #0900BA;
-            box-shadow: inset 1px 1px 5px black;
+            box-shadow: inset 1px 1px 5px #0900BA;
             transition: box-shadow ease 0.2s;
         }
 
@@ -277,7 +279,7 @@
             height: 100%;
             width: 0%; /* Will be updated via JS */
             background: #c3ff00;
-            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.516);
+            box-shadow: inset 1px 1px 5px #0900BA;
             transition: width 0.3s ease;
         }
 
@@ -910,7 +912,10 @@
         <div class="right-half">
             <div class="accordion" id="accordion">
                 <div class="accordion-item" id="item1">
-                    <div class="accordion-header"><div class="header-text primary-text">OVERVIEW</div><div class="header-text secondary-text">00</div></div>
+                    <div class="accordion-header">
+                        <div class="header-text primary-text">OVERVIEW</div>
+                        <img src="images/overview-icon.svg" alt="Overview Icon" class="header-text secondary-image">
+                    </div>
                     <div class="accordion-content">
                         <div class="content-inner">
                                 <p><span class="highlight-line">By 2100, Potter's Pond, RI will experience 9+ inches of sea level rise. We're imagining a future beyond displacement.</span></p> 
@@ -925,7 +930,10 @@
                     </div>
                 </div>
                 <div class="accordion-item" id="item2">
-                    <div class="accordion-header"><div class="header-text primary-text">BACKGROUND</div><div class="header-text secondary-text">01</div></div>
+                    <div class="accordion-header">
+                        <div class="header-text primary-text">BACKGROUND</div>
+                        <img src="images/background-icon.svg" alt="Overview Icon" class="header-text secondary-image">
+                    </div>     
                     <div class="accordion-content">
                         <div class="content-inner">
                             <p><span class="highlight-line">The story of TIDELANDS begins with SCUP.</span></p>
@@ -943,7 +951,10 @@
                     </div>
                 </div>
                 <div class="accordion-item" id="item3">
-                    <div class="accordion-header"><div class="header-text primary-text">VISION</div><div class="header-text secondary-text">02</div></div>
+                    <div class="accordion-header">
+                        <div class="header-text primary-text">VISION</div>
+                        <img src="images/vision-icon.svg" alt="Overview Icon" class="header-text secondary-image">
+                    </div> 
                     <div class="accordion-content">
                         <div class="content-inner">
                             <p><span class="highlight-line">We envision a future where climate adaptation is not imposed from above, but imagined and shaped by the communities who live with the water.</span></p>
@@ -957,7 +968,10 @@
                     </div>
                 </div>
                 <div class="accordion-item" id="item4">
-                    <div class="accordion-header"><div class="header-text primary-text">FIELD NOTES</div><div class="header-text secondary-text">03</div></div>
+                    <div class="accordion-header">
+                        <div class="header-text primary-text">FIELD NOTES</div>
+                        <img src="images/fieldnotes-icon.svg" alt="Overview Icon" class="header-text secondary-image">
+                    </div> 
                     <div class="accordion-content">
                         <div class="content-inner">
                             <p>Check back soon for behind-the-scenes documentation of our research, design process, and public engagements!<br><br>
@@ -1171,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to check if an element is clickable
-    function isClickable(element) {
+      function isClickable(element) {
         if (!element) return false;
         
         // Check common clickable elements
@@ -1186,9 +1200,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
         
+        // Check specifically for accordion headers
+        if (element.classList.contains('accordion-header') || 
+            element.closest('.accordion-header') || 
+            (element.classList.contains('header-text') && element.closest('.accordion-header'))) {
+            return true;
+        }
+        
         // Check for specific elements in your site
         const clickableClasses = [
-            'accordion-header',
             'info-button',
             'content-inner img',  // Clickable images in content
             'contact-column a',   // Contact links
