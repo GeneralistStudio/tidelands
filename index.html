@@ -1497,69 +1497,60 @@ document.addEventListener('DOMContentLoaded', function() {
     setupMobileLayout(); // Initial setup for title
     positionItemsDefault();
     
-    // Update the accordion header click handler
-    accordionHeaders.forEach((header, index) => {
-        header.addEventListener('click', function(e) {
-            // Prevent default behavior
-            e.preventDefault();
+  // Replace your existing accordion click handlers with this:
+accordionHeaders.forEach((header, index) => {
+    // Use both click and touchend for better mobile support
+    header.addEventListener('click', handleAccordionClick);
+    header.addEventListener('touchend', handleAccordionClick);
+    
+    function handleAccordionClick(e) {
+        // Explicitly prevent default and stop propagation
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const item = this.parentElement;
+        const wasActive = item.classList.contains('active');
+        
+        // Reset all headers to default position
+        accordionHeaders.forEach(h => {
+            h.classList.remove('centered');
+        });
+        
+        // Close all items first
+        accordionItems.forEach(accItem => {
+            accItem.classList.remove('active');
+            const content = accItem.querySelector('.accordion-content');
+            const contentInner = accItem.querySelector('.content-inner');
             
-            const item = this.parentElement;
-            const wasActive = item.classList.contains('active');
+            if (content) {
+                content.style.maxHeight = '0';
+            }
             
-            // Reset all headers to default position first
-            accordionHeaders.forEach(h => {
-                h.classList.remove('centered');
-            });
-            
-            // Close all items - reset content-inner opacity but keep backgrounds solid
-            accordionItems.forEach(accItem => {
-                accItem.classList.remove('active');
-                const content = accItem.querySelector('.accordion-content');
-                const contentInner = accItem.querySelector('.content-inner');
-                
-                if (content) {
-                    content.style.maxHeight = '0';
-                }
-                
-                if (contentInner) {
-                    contentInner.style.opacity = '0';
-                }
-            });
-            
-            // If clicked item wasn't active before, open it and center its header
-            if (!wasActive) {
-                // Add active class and reposition all items
-                item.classList.add('active');
-                
-                // Center the header of the active item
-                this.classList.add('centered');
-                
-                // Force a reflow to ensure CSS changes apply immediately
-                void item.offsetHeight;
-                
-                positionItemsWithActive(index);
-                
-                // In mobile view, scroll to make sure the header is visible
-                if (window.innerWidth <= 768) {
-                    setTimeout(() => {
-                        // Instead of scrolling to the very top, scroll to position the header
-                        // with a small offset from the top of the viewport
-                        const headerRect = header.getBoundingClientRect();
-                        const scrollOffset = 20; // 20px buffer from top of screen
-                        const targetPosition = window.pageYOffset + headerRect.top - scrollOffset;
-                        
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'auto' // Use 'auto' instead of 'smooth' for Safari compatibility
-                        });
-                    }, 100);
-                }
-            } else {
-                // Return to default positions
-                positionItemsDefault();
+            if (contentInner) {
+                contentInner.style.opacity = '0';
             }
         });
-    });
+        
+        // If item wasn't active before, open it
+        if (!wasActive) {
+            // Add active class
+            item.classList.add('active');
+            this.classList.add('centered');
+            
+            // Force reflow
+            void item.offsetHeight;
+            
+            // Position items with active one
+            positionItemsWithActive(index);
+        } else {
+            // Return to default positions
+            positionItemsDefault();
+        }
+        
+        // Return false to further ensure event doesn't propagate
+        return false;
+    }
+});
     
     // State variables for modals
     let infoOpen = false;
@@ -1570,37 +1561,53 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageModal = document.getElementById('imageModal');
     const expandedImage = document.getElementById('expandedImage');
     
-    // Info button toggle with support for both modals
-    infoButton.addEventListener('click', function() {
-        // If image modal is open, close it
-        if (imageModalOpen) {
-            infoButton.innerHTML = "i";
-            infoButton.classList.remove('active');
-            imageOverlay.style.display = "none";
-            imageModalOpen = false;
-            document.body.classList.remove('modal-open');
-            return;
-        }
-        
-        // Toggle info modal
-        if (!infoOpen) {
-            // Open info modal
-            infoButton.innerHTML = "X";
-            infoButton.classList.add('active'); 
-            overlay.style.display = "block";
-            infoModal.style.display = "block";
-            infoOpen = true;
-            document.body.classList.add('modal-open'); 
-        } else {
-            // Close info modal
-            infoButton.innerHTML = "i";
-            infoButton.classList.remove('active');
-            overlay.style.display = "none";
-            infoModal.style.display = "none";
-            infoOpen = false;
-            document.body.classList.remove('modal-open');
-        }
-    });
+// Extract the toggle functionality into a separate function
+function toggleInfoModal() {
+    // If image modal is open, close it
+    if (imageModalOpen) {
+        infoButton.innerHTML = "i";
+        infoButton.classList.remove('active');
+        imageOverlay.style.display = "none";
+        imageModalOpen = false;
+        document.body.classList.remove('modal-open');
+        return;
+    }
+    
+    // Toggle info modal
+    if (!infoOpen) {
+        // Open info modal
+        infoButton.innerHTML = "X";
+        infoButton.classList.add('active'); 
+        overlay.style.display = "block";
+        infoModal.style.display = "block";
+        infoOpen = true;
+        document.body.classList.add('modal-open'); 
+    } else {
+        // Close info modal
+        infoButton.innerHTML = "i";
+        infoButton.classList.remove('active');
+        overlay.style.display = "none";
+        infoModal.style.display = "none";
+        infoOpen = false;
+        document.body.classList.remove('modal-open');
+    }
+}
+
+// Update the existing click handler to use the function
+infoButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleInfoModal();
+    return false;
+});
+
+// Add a touch event listener for mobile browsers
+infoButton.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleInfoModal();
+    return false;
+});
     
     // Close info modal when clicking overlay
     overlay.addEventListener('click', function(e) {
